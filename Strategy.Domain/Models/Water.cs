@@ -5,7 +5,9 @@
     /// </summary>
     public sealed class Water
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Создает новый пустой объект воды.
+        /// </summary>
         public Water()
         {
         }

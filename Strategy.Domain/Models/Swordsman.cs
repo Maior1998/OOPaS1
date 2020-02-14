@@ -5,6 +5,7 @@
     /// </summary>
     public sealed class Swordsman
     {
+        
         public Swordsman(Player player)
         {
             Player = player;

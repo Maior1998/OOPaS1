@@ -7,7 +7,12 @@ namespace Strategy.Domain.Models
     /// </summary>
     public sealed class Player
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Инициализирует новый объект игрока с заданным номером, именем и фоткой (портретом).
+        /// </summary>
+        /// <param name="id">Номер создаваемого игрока.</param>
+        /// <param name="name">Имя создаваемого игрока.</param>
+        /// <param name="portrait">Портрет, соответсвующий игроку.</param>
         public Player(int id, string name, ImageSource portrait)
         {
             Id = id;

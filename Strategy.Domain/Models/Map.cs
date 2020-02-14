@@ -7,7 +7,11 @@ namespace Strategy.Domain.Models
     /// </summary>
     public sealed class Map
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Инициализирует новый объект карты по заданной поверхности и набору юнитов.
+        /// </summary>
+        /// <param name="ground">ПОверхность карты.</param>
+        /// <param name="units">Юниты, расположенные на карте.</param>
         public Map(IReadOnlyList<object> ground, IReadOnlyList<object> units)
         {
             Ground = ground;

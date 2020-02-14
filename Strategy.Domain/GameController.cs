@@ -11,6 +11,7 @@ namespace Strategy.Domain
     /// </summary>
     public class GameController
     {
+
         private readonly Map _map;
 
         // Очки жизни каждого юнита.
@@ -24,7 +25,10 @@ namespace Strategy.Domain
         private readonly ImageSource _grassSource = BuildSourceFromPath("Resources/Ground/Grass.png");
         private readonly ImageSource _waterSource = BuildSourceFromPath("Resources/Ground/Water.png");
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Инициализирует новый объект контроллера игры.
+        /// </summary>
+        /// <param name="map"></param>
         public GameController(Map map)
         {
             _map = map;
@@ -34,38 +38,38 @@ namespace Strategy.Domain
         /// <summary>
         /// Получить координаты объекта.
         /// </summary>
-        /// <param name="o">Координаты объекта, которые необходимо получить.</param>
+        /// <param name="TargetObject">Координаты объекта, которые необходимо получить.</param>
         /// <returns>Координата x, координата y.</returns>
-        public Coordinates GetObjectCoordinates(object o)
+        public Coordinates GetObjectCoordinates(object TargetObject)
         {
-            if (o is Archer a)
+            if (TargetObject is Archer archer)
             {
-                return new Coordinates(a.X, a.Y);
+                return new Coordinates(archer.X, archer.Y);
             }
 
-            if (o is Catapult c)
+            if (TargetObject is Catapult catapult)
             {
-                return new Coordinates(c.X, c.Y);
+                return new Coordinates(catapult.X, catapult.Y);
             }
 
-            if (o is Horseman h)
+            if (TargetObject is Horseman horseman)
             {
-                return new Coordinates(h.X, h.Y);
+                return new Coordinates(horseman.X, horseman.Y);
             }
 
-            if (o is Swordsman s)
+            if (TargetObject is Swordsman swordsman)
             {
-                return new Coordinates(s.X, s.Y);
+                return new Coordinates(swordsman.X, swordsman.Y);
             }
 
-            if (o is Grass g)
+            if (TargetObject is Grass grass)
             {
-                return new Coordinates(g.X, g.Y);
+                return new Coordinates(grass.X, grass.Y);
             }
 
-            if (o is Water w)
+            if (TargetObject is Water water)
             {
-                return new Coordinates(w.X, w.Y);
+                return new Coordinates(water.X, water.Y);
             }
 
             throw new ArgumentException("Неизвестный тип");
@@ -74,39 +78,40 @@ namespace Strategy.Domain
         /// <summary>
         /// Может ли юнит передвинуться в указанную клетку.
         /// </summary>
-        /// <param name="u">Юнит.</param>
+        /// <param name="unit">Юнит.</param>
         /// <param name="x">Координата X клетки.</param>
         /// <param name="y">Координата Y клетки.</param>
         /// <returns>
         /// <see langvalue="true" />, если юнит может переместиться
         /// <see langvalue="false" /> - иначе.
         /// </returns>
-        public bool CanMoveUnit(object u, int x, int y)
+        public bool CanMoveUnit(object unit, int x, int y)
         {
-            if (u is Archer a)
+            if (unit is Archer archer)
             {
-                if (Math.Abs(a.X - x) > 3 || Math.Abs(a.Y - y) > 3)
+                if (Math.Abs(archer.X - x) > 3 || Math.Abs(archer.Y - y) > 3)
                     return false;
             }
-            else if (u is Catapult c)
+            else if (unit is Catapult catapult)
             {
-                if (Math.Abs(c.X - x) > 1 || Math.Abs(c.Y - y) > 1)
+                if (Math.Abs(catapult.X - x) > 1 || Math.Abs(catapult.Y - y) > 1)
                     return false;
             }
-            else if (u is Horseman h)
+            else if (unit is Horseman horseman)
             {
-                if (Math.Abs(h.X - x) > 10 || Math.Abs(h.Y - y) > 10)
+                if (Math.Abs(horseman.X - x) > 10 || Math.Abs(horseman.Y - y) > 10)
                     return false;
             }
-            else if (u is Swordsman s)
+            else if (unit is Swordsman swordsman)
             {
-                if (Math.Abs(s.X - x) > 5 || Math.Abs(s.Y - y) > 5)
+                if (Math.Abs(swordsman.X - x) > 5 || Math.Abs(swordsman.Y - y) > 5)
                     return false;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
 
 
+            //проверка, находится ли на указзанном месте вода.
             foreach (object g in _map.Ground)
             {
                 if (g is Water w && w.X == x && w.Y == y)
@@ -115,6 +120,7 @@ namespace Strategy.Domain
                 }
             }
 
+            //проверка, не находися ли в указанной клетке еще один юнит.
             foreach (object u1 in _map.Units)
             {
                 if (u1 is Archer a1)
@@ -147,33 +153,34 @@ namespace Strategy.Domain
         /// <summary>
         /// Передвинуть юнита в указанную клетку.
         /// </summary>
-        /// <param name="u">Юнит.</param>
+        /// <param name="unit">Юнит.</param>
         /// <param name="x">Координата X клетки.</param>
         /// <param name="y">Координата Y клетки.</param>
-        public void MoveUnit(object u, int x, int y)
+        public void MoveUnit(object unit, int x, int y)
         {
-            if (!CanMoveUnit(u, x, y))
+            //если не можем передвинуть юнита - выходим.
+            if (!CanMoveUnit(unit, x, y))
                 return;
 
-            if (u is Archer a)
+            if (unit is Archer archer)
             {
-                a.X = x;
-                a.Y = y;
+                archer.X = x;
+                archer.Y = y;
             }
-            else if (u is Catapult c)
+            else if (unit is Catapult catapult)
             {
-                c.X = x;
-                c.Y = y;
+                catapult.X = x;
+                catapult.Y = y;
             }
-            else if (u is Horseman h)
+            else if (unit is Horseman horseman)
             {
-                h.X = x;
-                h.Y = y;
+                horseman.X = x;
+                horseman.Y = y;
             }
-            else if (u is Swordsman s)
+            else if (unit is Swordsman swordsman)
             {
-                s.X = x;
-                s.Y = y;
+                swordsman.X = x;
+                swordsman.Y = y;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
@@ -182,82 +189,85 @@ namespace Strategy.Domain
         /// <summary>
         /// Проверить, может ли один юнит атаковать другого.
         /// </summary>
-        /// <param name="au">Юнит, который собирается совершить атаку.</param>
-        /// <param name="tu">Юнит, который является целью.</param>
+        /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
+        /// <param name="TargetUnit">Юнит, который является целью.</param>
         /// <returns>
         /// <see langvalue="true" />, если атака возможна
         /// <see langvalue="false" /> - иначе.
         /// </returns>
-        public bool CanAttackUnit(object au, object tu)
+        public bool CanAttackUnit(object AttackingUnit, object TargetUnit)
         {
-            Coordinates cr = GetObjectCoordinates(tu);
-            Player ptu;
-            if (tu is Archer a)
+            Coordinates cr = GetObjectCoordinates(TargetUnit);
+            Player TargetUnitPlayer;
+            if (TargetUnit is Archer archer)
             {
-                ptu = a.Player;
+                TargetUnitPlayer = archer.Player;
             }
-            else if (tu is Catapult c)
+            else if (TargetUnit is Catapult catapult)
             {
-                ptu = c.Player;
+                TargetUnitPlayer = catapult.Player;
             }
-            else if (tu is Horseman h)
+            else if (TargetUnit is Horseman horseman)
             {
-                ptu = h.Player;
+                TargetUnitPlayer = horseman.Player;
             }
-            else if (tu is Swordsman s)
+            else if (TargetUnit is Swordsman swordsman)
             {
-                ptu = s.Player;
+                TargetUnitPlayer = swordsman.Player;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
 
-            if (IsDead(tu))
+            if (IsDead(TargetUnit))
                 return false;
 
-            if (au is Archer a1)
+            if (AttackingUnit is Archer a1)
             {
-                if (a1.Player == ptu)
+                if (a1.Player == TargetUnitPlayer)
                     return false;
 
                 int dx = a1.X - cr.X;
                 int dy = a1.Y - cr.Y;
 
-                return dx >= -5 && dx <= 5 && dy >= -5 && dy <= 5;
+                //return dx >= -5 && dx <= 5 && dy >= -5 && dy <= 5;
+                return Math.Abs(dx)<=5 && Math.Abs(dy) <= 5;
             }
 
-            if (au is Catapult c1)
+            if (AttackingUnit is Catapult c1)
             {
-                if (c1.Player == ptu)
+                if (c1.Player == TargetUnitPlayer)
                     return false;
 
                 int dx = c1.X - cr.X;
                 int dy = c1.Y - cr.Y;
 
-                return dx >= -10 && dx <= 10 && dy >= -10 && dy <= 10;
+                return Math.Abs(dx) <= 10 && Math.Abs(dy) <= 10;
             }
 
-            if (au is Horseman h1)
+            if (AttackingUnit is Horseman h1)
             {
-                if (h1.Player == ptu)
+                if (h1.Player == TargetUnitPlayer)
                     return false;
 
                 int dx = h1.X - cr.X;
                 int dy = h1.Y - cr.Y;
 
-                return (dx == -1 || dx == 0 || dx == 1) &&
-                       (dy == -1 || dy == 0 || dy == 1);
+                //return (dx == -1 || dx == 0 || dx == 1) &&
+                //       (dy == -1 || dy == 0 || dy == 1);
+                return Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1;
             }
 
-            if (au is Swordsman s1)
+            if (AttackingUnit is Swordsman s1)
             {
-                if (s1.Player == ptu)
+                if (s1.Player == TargetUnitPlayer)
                     return false;
 
                 int dx = s1.X - cr.X;
                 int dy = s1.Y - cr.Y;
 
-                return (dx == -1 || dx == 0 || dx == 1) &&
-                       (dy == -1 || dy == 0 || dy == 1);
+                //return (dx == -1 || dx == 0 || dx == 1) &&
+                //       (dy == -1 || dy == 0 || dy == 1);
+                return Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1;
             }
 
             throw new ArgumentException("Неизвестный тип");
@@ -266,101 +276,103 @@ namespace Strategy.Domain
         /// <summary>
         /// Атаковать указанного юнита.
         /// </summary>
-        /// <param name="au">Юнит, который собирается совершить атаку.</param>
-        /// <param name="tu">Юнит, который является целью.</param>
-        public void AttackUnit(object au, object tu)
+        /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
+        /// <param name="TargetUnit">Юнит, который является целью.</param>
+        public void AttackUnit(object AttackingUnit, object TargetUnit)
         {
-            if (!CanAttackUnit(au, tu))
+            if (!CanAttackUnit(AttackingUnit, TargetUnit))
                 return;
 
-            InitializeUnitHp(tu);
-            int thp = _hp[tu];
-            Coordinates cr = GetObjectCoordinates(tu);
+            InitializeUnitHp(TargetUnit);
+            int thp = _hp[TargetUnit];
+            Coordinates cr = GetObjectCoordinates(TargetUnit);
             int d = 0;
 
-            if (au is Archer a)
+            if (AttackingUnit is Archer a)
             {
                 d = 50;
 
                 int dx = a.X - cr.X;
                 int dy = a.Y - cr.Y;
 
-                if ((dx == -1 || dx == 0 || dx == 1) &&
-                    (dy == -1 || dy == 0 || dy == 1))
+                //if ((dx == -1 || dx == 0 || dx == 1) &&
+                //    (dy == -1 || dy == 0 || dy == 1))
+                if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
                 {
                     d /= 2;
                 }
             }
-            else if (au is Catapult c)
+            else if (AttackingUnit is Catapult c)
             {
                 d = 100;
 
                 int dx = c.X - cr.X;
                 int dy = c.Y - cr.Y;
 
-                if ((dx == -1 || dx == 0 || dx == 1) &&
-                    (dy == -1 || dy == 0 || dy == 1))
+                //if ((dx == -1 || dx == 0 || dx == 1) &&
+                //    (dy == -1 || dy == 0 || dy == 1))
+                if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
                 {
                     d /= 2;
                 }
             }
-            else if (au is Horseman)
+            else if (AttackingUnit is Horseman)
             {
                 d = 75;
             }
-            else if (au is Swordsman)
+            else if (AttackingUnit is Swordsman)
             {
                 d = 50;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
 
-            _hp[tu] = Math.Max(thp - d, 0);
+            _hp[TargetUnit] = Math.Max(thp - d, 0);
         }
 
         /// <summary>
         /// Получить изображение объекта.
         /// </summary>
-        public ImageSource GetObjectSource(object o)
+        public ImageSource GetObjectSource(object target_object)
         {
-            if (o is Archer)
+            if (target_object is Archer)
             {
-                if (IsDead(o))
+                if (IsDead(target_object))
                     return _deadUnitSource;
 
                 return _archerSource;
             }
 
-            if (o is Catapult)
+            if (target_object is Catapult)
             {
-                if (IsDead(o))
+                if (IsDead(target_object))
                     return _deadUnitSource;
 
                 return _catapultSource;
             }
 
-            if (o is Horseman)
+            if (target_object is Horseman)
             {
-                if (IsDead(o))
+                if (IsDead(target_object))
                     return _deadUnitSource;
 
                 return _horsemanSource;
             }
 
-            if (o is Swordsman)
+            if (target_object is Swordsman)
             {
-                if (IsDead(o))
+                if (IsDead(target_object))
                     return _deadUnitSource;
 
                 return _swordsmanSource;
             }
 
-            if (o is Grass)
+            if (target_object is Grass)
             {
                 return _grassSource;
             }
 
-            if (o is Water)
+            if (target_object is Water)
             {
                 return _waterSource;
             }
