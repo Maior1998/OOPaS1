@@ -18,6 +18,7 @@
             Damage = 50;
         }
 
+
         public override void Attack(PlayableUnit Other)
         {
             

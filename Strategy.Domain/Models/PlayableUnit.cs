@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Strategy.Domain.Models
 {
@@ -57,7 +58,30 @@ namespace Strategy.Domain.Models
         /// </summary>
         public int HP { get; set; }
 
-        public virtual void Attack(PlayableUnit Other) { }
+        /// <summary>
+        /// Определяет, не умер ли юнит.
+        /// </summary>
+        public bool IsDead => HP != 0;
+
+        /// <summary>
+        /// Изображение мертвого юнита. Применимо только для играбельных юнитов.
+        /// </summary>
+        public static ImageSource DeadUnitImageSource;
+
+        /// <summary>
+        /// ПОпытаться атаковать другой юнит.
+        /// </summary>
+        /// <param name="Other"></param>
+        public abstract void Attack(PlayableUnit Other);
+
+        public static bool CanMoveTo(object unit, int x, int y) =>  CanMoveTo(unit as PlayableUnit, x, y);
+        
+        public static bool CanMoveTo(PlayableUnit unit, int x, int y)
+        {
+            if (unit == null) return false;
+            return Math.Abs(unit.UnitCoordinates.X - x) <= unit.MaxMoveDX &&
+                   Math.Abs(unit.UnitCoordinates.Y - y) <= unit.MaxMoveDY;
+        }
 
     }
 }
