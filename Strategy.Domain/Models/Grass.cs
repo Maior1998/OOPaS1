@@ -3,21 +3,14 @@
     /// <summary>
     /// Проходимая поверхность на земле.
     /// </summary>
-    public sealed class Grass
+    public sealed class Grass : GameUnit
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Создает новый объект травы.
+        /// </summary>
         public Grass()
         {
         }
-
-        /// <summary>
-        /// Координата x травы на карте.
-        /// </summary>
-        public int X { get; set; }
-
-        /// <summary>
-        /// Координата y травы на карте.
-        /// </summary>
-        public int Y { get; set; }
+        
     }
 }

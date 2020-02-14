@@ -3,28 +3,17 @@
     /// <summary>
     /// Класс мечника.
     /// </summary>
-    public sealed class Swordsman
+    public sealed class Swordsman : PlayableUnit
     {
-        
-        public Swordsman(Player player)
+
+        /// <summary>
+        /// Инициализирует новый объект мечника, управляемый заданным игроком.
+        /// </summary>
+        /// <param name="player">Игрок, управляющий мечником.</param>
+        public Swordsman(Player player) : base(player)
         {
-            Player = player;
+            MaxMoveDX = MaxAttackDY = 5;
+            MaxAttackDX = MaxAttackDY = 1;
         }
-
-
-        /// <summary>
-        /// Координата x мечника на карте.
-        /// </summary>
-        public int X { get; set; }
-
-        /// <summary>
-        /// Координата y мечника на карте.
-        /// </summary>
-        public int Y { get; set; }
-
-        /// <summary>
-        /// Игрок, который управляет юнитом.
-        /// </summary>
-        public Player Player { get; }
     }
 }

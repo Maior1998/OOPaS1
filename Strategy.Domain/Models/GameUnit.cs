@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Strategy.Domain.Models
 {
+    /// <summary>
+    /// Представляет поля всех игровых юнитов.
+    /// </summary>
     public abstract class GameUnit
     {
+
         /// <summary>
         /// Координата X текущего юнита.
         /// </summary>
@@ -17,10 +21,6 @@ namespace Strategy.Domain.Models
         /// Координата Y текущего юнита.
         /// </summary>
         public int Y { get; set; }
-
-        /// <summary>
-        /// Игрок, управляющий юнитом.
-        /// </summary>
-        public Player Player { get; }
+        
     }
 }

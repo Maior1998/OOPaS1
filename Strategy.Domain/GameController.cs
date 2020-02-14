@@ -42,35 +42,8 @@ namespace Strategy.Domain
         /// <returns>Координата x, координата y.</returns>
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
-            if (TargetObject is Archer archer)
-            {
-                return new Coordinates(archer.X, archer.Y);
-            }
-
-            if (TargetObject is Catapult catapult)
-            {
-                return new Coordinates(catapult.X, catapult.Y);
-            }
-
-            if (TargetObject is Horseman horseman)
-            {
-                return new Coordinates(horseman.X, horseman.Y);
-            }
-
-            if (TargetObject is Swordsman swordsman)
-            {
-                return new Coordinates(swordsman.X, swordsman.Y);
-            }
-
-            if (TargetObject is Grass grass)
-            {
-                return new Coordinates(grass.X, grass.Y);
-            }
-
-            if (TargetObject is Water water)
-            {
-                return new Coordinates(water.X, water.Y);
-            }
+            if (TargetObject is GameUnit unit)
+                return new Coordinates(unit.X, unit.Y);
 
             throw new ArgumentException("Неизвестный тип");
         }
@@ -87,37 +60,20 @@ namespace Strategy.Domain
         /// </returns>
         public bool CanMoveUnit(object unit, int x, int y)
         {
-            if (unit is Archer archer)
+            if (unit is PlayableUnit archer)
             {
-                if (Math.Abs(archer.X - x) > 3 || Math.Abs(archer.Y - y) > 3)
-                    return false;
-            }
-            else if (unit is Catapult catapult)
-            {
-                if (Math.Abs(catapult.X - x) > 1 || Math.Abs(catapult.Y - y) > 1)
-                    return false;
-            }
-            else if (unit is Horseman horseman)
-            {
-                if (Math.Abs(horseman.X - x) > 10 || Math.Abs(horseman.Y - y) > 10)
-                    return false;
-            }
-            else if (unit is Swordsman swordsman)
-            {
-                if (Math.Abs(swordsman.X - x) > 5 || Math.Abs(swordsman.Y - y) > 5)
+                if (Math.Abs(archer.X - x) > archer.MaxMoveDX || Math.Abs(archer.Y - y) > archer.MaxMoveDY)
                     return false;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
 
 
-            //проверка, находится ли на указзанном месте вода.
+            //проверка, находится ли на указанном месте вода.
             foreach (object g in _map.Ground)
             {
                 if (g is Water w && w.X == x && w.Y == y)
-                {
                     return false;
-                }
             }
 
             //проверка, не находися ли в указанной клетке еще один юнит.
@@ -162,25 +118,10 @@ namespace Strategy.Domain
             if (!CanMoveUnit(unit, x, y))
                 return;
 
-            if (unit is Archer archer)
+            if (unit is PlayableUnit playableunit)
             {
-                archer.X = x;
-                archer.Y = y;
-            }
-            else if (unit is Catapult catapult)
-            {
-                catapult.X = x;
-                catapult.Y = y;
-            }
-            else if (unit is Horseman horseman)
-            {
-                horseman.X = x;
-                horseman.Y = y;
-            }
-            else if (unit is Swordsman swordsman)
-            {
-                swordsman.X = x;
-                swordsman.Y = y;
+                playableunit.X = x;
+                playableunit.Y = y;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
@@ -199,21 +140,9 @@ namespace Strategy.Domain
         {
             Coordinates cr = GetObjectCoordinates(TargetUnit);
             Player TargetUnitPlayer;
-            if (TargetUnit is Archer archer)
+            if (TargetUnit is PlayableUnit playableunit)
             {
-                TargetUnitPlayer = archer.Player;
-            }
-            else if (TargetUnit is Catapult catapult)
-            {
-                TargetUnitPlayer = catapult.Player;
-            }
-            else if (TargetUnit is Horseman horseman)
-            {
-                TargetUnitPlayer = horseman.Player;
-            }
-            else if (TargetUnit is Swordsman swordsman)
-            {
-                TargetUnitPlayer = swordsman.Player;
+                 TargetUnitPlayer = playableunit.Player;
             }
             else
                 throw new ArgumentException("Неизвестный тип");

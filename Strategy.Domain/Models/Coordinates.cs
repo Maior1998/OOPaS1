@@ -1,28 +1,28 @@
-﻿namespace Strategy.Domain.Models
+﻿using System;
+
+namespace Strategy.Domain.Models
 {
     /// <summary>
     /// Координаты на карте.
     /// </summary>
     public sealed class Coordinates
     {
+        /// <summary>
+        /// Координата X.
+        /// </summary>
+        public int X { get; set; }
+
+        /// <summary>
+        /// Координата Y.
+        /// </summary>
+        public int Y { get; set; }
+
         /// <inheritdoc />
         public Coordinates(int x, int y)
         {
             X = x;
             Y = y;
         }
-
-
-        /// <summary>
-        /// Координата X.
-        /// </summary>
-        public int X { get; }
-
-        /// <summary>
-        /// Координата Y.
-        /// </summary>
-        public int Y { get; }
-
 
         /// <inheritdoc />
         public override bool Equals(object obj)

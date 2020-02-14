@@ -3,27 +3,17 @@
     /// <summary>
     /// Класс всадника.
     /// </summary>
-    public sealed class Horseman
+    public sealed class Horseman : PlayableUnit
     {
-        /// <inheritdoc />
-        public Horseman(Player player)
+        /// <summary>
+        /// Инициализирует новый объект всадника, управляемый заданным игроком.
+        /// </summary>
+        /// <param name="player">Игрок, упровляющий всадником.</param>
+        public Horseman(Player player) : base(player)
         {
-            Player = player;
+            MaxMoveDX = MaxMoveDY = 10;
+            MaxAttackDX = MaxAttackDY = 1;
         }
 
-        /// <summary>
-        /// Координата x всадника на карте.
-        /// </summary>
-        public int X { get; set; }
-
-        /// <summary>
-        /// Координата y всадника на карте.
-        /// </summary>
-        public int Y { get; set; }
-
-        /// <summary>
-        /// Игрок, который управляет юнитом.
-        /// </summary>
-        public Player Player { get; }
     }
 }
