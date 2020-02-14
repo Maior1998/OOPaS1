@@ -47,5 +47,17 @@ namespace Strategy.Domain.Models
         /// </summary>
         public int MaxAttackDY { get; protected set; }
 
+        /// <summary>
+        /// Урон, наносимый юнитом.
+        /// </summary>
+        public int Damage { get; protected set; }
+
+        /// <summary>
+        /// Очки здоровья юнита.
+        /// </summary>
+        public int HP { get; set; }
+
+        public virtual void Attack(PlayableUnit Other) { }
+
     }
 }

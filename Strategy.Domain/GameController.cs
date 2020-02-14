@@ -213,16 +213,16 @@ namespace Strategy.Domain
                 return;
 
             InitializeUnitHp(TargetUnit);
-            int thp = _hp[TargetUnit];
-            Coordinates cr = GetObjectCoordinates(TargetUnit);
+            int targethp = _hp[TargetUnit];
+            Coordinates coordinates = GetObjectCoordinates(TargetUnit);
             int d = 0;
 
-            if (AttackingUnit is Archer a)
+            if (AttackingUnit is Archer archer)
             {
                 d = 50;
 
-                int dx = a.X - cr.X;
-                int dy = a.Y - cr.Y;
+                int dx = archer.X - coordinates.X;
+                int dy = archer.Y - coordinates.Y;
 
                 //if ((dx == -1 || dx == 0 || dx == 1) &&
                 //    (dy == -1 || dy == 0 || dy == 1))
@@ -231,12 +231,12 @@ namespace Strategy.Domain
                     d /= 2;
                 }
             }
-            else if (AttackingUnit is Catapult c)
+            else if (AttackingUnit is Catapult catapult)
             {
                 d = 100;
 
-                int dx = c.X - cr.X;
-                int dy = c.Y - cr.Y;
+                int dx = catapult.X - coordinates.X;
+                int dy = catapult.Y - coordinates.Y;
 
                 //if ((dx == -1 || dx == 0 || dx == 1) &&
                 //    (dy == -1 || dy == 0 || dy == 1))
@@ -256,7 +256,7 @@ namespace Strategy.Domain
             else
                 throw new ArgumentException("Неизвестный тип");
 
-            _hp[TargetUnit] = Math.Max(thp - d, 0);
+            _hp[TargetUnit] = Math.Max(targethp - d, 0);
         }
 
         /// <summary>

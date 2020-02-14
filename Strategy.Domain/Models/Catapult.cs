@@ -13,6 +13,8 @@
         {
             MaxMoveDX = MaxMoveDY = 1;
             MaxAttackDX = MaxAttackDY = 10;
+            HP = 75;
+            Damage = 100;
         }
 
     }

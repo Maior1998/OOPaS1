@@ -14,7 +14,13 @@
         {
             MaxMoveDX = MaxMoveDY = 3;
             MaxAttackDX = MaxAttackDY = 5;
+            HP = 50;
+            Damage = 50;
         }
-        
+
+        public override void Attack(PlayableUnit Other)
+        {
+            
+        }
     }
 }
