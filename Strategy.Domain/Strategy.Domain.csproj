@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Strategy.Domain</RootNamespace>
     <AssemblyName>Strategy.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -50,6 +50,7 @@
     <Compile Include="GameController.cs" />
     <Compile Include="Models\Archer.cs" />
     <Compile Include="Models\Catapult.cs" />
+    <Compile Include="Models\GameUnit.cs" />
     <Compile Include="Models\Grass.cs" />
     <Compile Include="Models\Horseman.cs" />
     <Compile Include="Models\Map.cs" />
