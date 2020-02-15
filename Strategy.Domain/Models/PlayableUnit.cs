@@ -69,18 +69,65 @@ namespace Strategy.Domain.Models
         public static ImageSource DeadUnitImageSource;
 
         /// <summary>
-        /// ПОпытаться атаковать другой юнит.
+        /// Попытаться атаковать другой играбельный юнит.
         /// </summary>
         /// <param name="Other"></param>
         public abstract void Attack(PlayableUnit Other);
 
-        public static bool CanMoveTo(object unit, int x, int y) =>  CanMoveTo(unit as PlayableUnit, x, y);
-        
+        /// <summary>
+        /// Определяет, может ли текущий юнит атаковать указанный юнит.
+        /// </summary>
+        /// <param name="Other"></param>
+        /// <returns></returns>
+        public bool CanAtack(PlayableUnit Other)
+        {
+            return Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X) <= MaxAttackDX &&
+                   Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y) <= MaxAttackDY;
+        }
+
+        //public static bool CanMoveTo(object unit, int x, int y) =>  CanMoveTo(unit as PlayableUnit, x, y);
+
+        /// <summary>
+        /// Определяет, может ли текущий юнит переместиться в клетку с указанными координатами.
+        /// </summary>
+        /// <param name="x">Координата x проверяемой клетки поля.</param>
+        /// <param name="y">Координата y проверяемой клетки поля.</param>
+        /// <returns></returns>
+        public bool CanMoveTo(int x, int y) => CanMoveTo(this, x, y);
+
+        /// <summary>
+        /// Определяет, может ли указанный юнит переместиться в клетку с указанными координатами.
+        /// </summary>
+        /// <param name="unit">Юнит, для которого необходимо проверить возможность перемещения.</param>
+        /// <param name="x">Координата x проверяемой клетки поля.</param>
+        /// <param name="y">Координата y проверяемой клетки поля.</param>
+        /// <returns></returns>
         public static bool CanMoveTo(PlayableUnit unit, int x, int y)
         {
             if (unit == null) return false;
             return Math.Abs(unit.UnitCoordinates.X - x) <= unit.MaxMoveDX &&
                    Math.Abs(unit.UnitCoordinates.Y - y) <= unit.MaxMoveDY;
+        }
+
+        /// <summary>
+        /// Попытка передвинуть текущий юнит на заданную клекту.
+        /// </summary>
+        /// <param name="x">Координата x клетки перемещения.</param>
+        /// <param name="y">Координата y клетки перемещения.</param>
+        public void MoveTo(int x, int y) => MoveTo(this, x, y);
+
+        /// <summary>
+        /// Попытка передвинуть указанный юнит на заданную клекту.
+        /// </summary>
+        /// <param name="Target">Передвигаемый юнит.</param>
+        /// <param name="x">Координата x клетки перемещения.</param>
+        /// <param name="y">Координата y клетки перемещения.</param>
+        public static void MoveTo(PlayableUnit Target, int x, int y)
+        {
+            if (Target == null) return;
+            if (!Target.CanMoveTo(x, y)) return;
+            Target.UnitCoordinates.X = x;
+            Target.UnitCoordinates.Y = y;
         }
 
     }

@@ -1,4 +1,6 @@
-﻿namespace Strategy.Domain.Models
+﻿using System;
+
+namespace Strategy.Domain.Models
 {
     /// <summary>
     /// Лучник.
@@ -22,6 +24,10 @@
         public override void Attack(PlayableUnit Other)
         {
             
+            int dx = Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X);
+            int dy = Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y);
+
+
         }
     }
 }

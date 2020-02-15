@@ -34,7 +34,7 @@ namespace Strategy.Domain
             _map = map;
         }
 
-
+        //TODO: заменить просто просмотром свойства UnitCoordinates
         /// <summary>
         /// Получить координаты объекта.
         /// </summary>
@@ -43,11 +43,12 @@ namespace Strategy.Domain
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
             if (TargetObject is GameUnit unit)
-                return new Coordinates(unit.X, unit.Y);
+                return unit.UnitCoordinates;
 
             throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: заменить на вызов CanMoveTo объекта или класса PlayableUnit
         /// <summary>
         /// Может ли юнит передвинуться в указанную клетку.
         /// </summary>
@@ -127,6 +128,7 @@ namespace Strategy.Domain
                 throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: удалить и заменить на вызов функции CanAttack у объекта PlayableUnit
         /// <summary>
         /// Проверить, может ли один юнит атаковать другого.
         /// </summary>
@@ -202,6 +204,7 @@ namespace Strategy.Domain
             throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: удалить и заменить на вызов функции Attack у объекта PlayableUnit
         /// <summary>
         /// Атаковать указанного юнита.
         /// </summary>
@@ -259,6 +262,8 @@ namespace Strategy.Domain
             _hp[TargetUnit] = Math.Max(targethp - d, 0);
         }
 
+        //TODO: необходимо в конструкторе каждого юнита автоматически прописывать
+        //imagesource?
         /// <summary>
         /// Получить изображение объекта.
         /// </summary>
@@ -309,6 +314,7 @@ namespace Strategy.Domain
             throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: заменить обращением к свойству IsDead у объекта PlayableUnit
         /// <summary>
         /// Проверить, что указанный юнит умер.
         /// </summary>
@@ -326,6 +332,7 @@ namespace Strategy.Domain
             return false;
         }
 
+        //TODO: удалить?
         /// <summary>
         /// Инициализировать здоровье юнита.
         /// </summary>
