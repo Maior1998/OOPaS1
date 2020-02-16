@@ -31,7 +31,7 @@ namespace Strategy.Domain
             _map = map;
         }
 
-
+        //TODO: заменить просто просмотром свойства UnitCoordinates
         /// <summary>
         /// Получить координаты объекта.
         /// </summary>
@@ -40,11 +40,12 @@ namespace Strategy.Domain
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
             if (TargetObject is GameUnit unit)
-                return new Coordinates(unit.UnitCoordinates.X, unit.UnitCoordinates.Y);
+                return new Coordinates(unit.X, unit.Y);
 
             throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: заменить на вызов CanMoveTo объекта или класса PlayableUnit
         /// <summary>
         /// Может ли юнит передвинуться в указанную клетку.
         /// </summary>
@@ -126,6 +127,7 @@ namespace Strategy.Domain
                 throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: удалить и заменить на вызов функции CanAttack у объекта PlayableUnit
         /// <summary>
         /// Проверить, может ли один юнит атаковать другого.
         /// </summary>
@@ -201,6 +203,7 @@ namespace Strategy.Domain
             throw new ArgumentException("Неизвестный тип");
         }
 
+        //TODO: удалить и заменить на вызов функции Attack у объекта PlayableUnit
         /// <summary>
         /// Атаковать указанного юнита.
         /// </summary>
@@ -258,6 +261,8 @@ namespace Strategy.Domain
             _hp[TargetUnit] = Math.Max(targethp - d, 0);
         }
 
+        //TODO: необходимо в конструкторе каждого юнита автоматически прописывать
+        //imagesource?
         /// <summary>
         /// Получить изображение объекта.
         /// </summary>
@@ -306,6 +311,52 @@ namespace Strategy.Domain
             }
 
             throw new ArgumentException("Неизвестный тип");
+        }
+
+        /// <summary>
+        /// Проверить, что указанный юнит умер.
+        /// </summary>
+        /// <param name="u">Юнит.</param>
+        /// <returns>
+        /// <see langvalue="true" />, если у юнита не осталось очков здоровья,
+        /// <see langvalue="false" /> - иначе.
+        /// </returns>
+        private bool IsDead(object u)
+        {
+            if (_hp.TryGetValue(u, out int hp))
+                return hp == 0;
+
+            InitializeUnitHp(u);
+            return false;
+        }
+
+        /// <summary>
+        /// Инициализировать здоровье юнита.
+        /// </summary>
+        /// <param name="u">Юнит.</param>
+        private void InitializeUnitHp(object u)
+        {
+            if (_hp.ContainsKey(u))
+                return;
+
+            if (u is Archer)
+            {
+                _hp.Add(u, 50);
+            }
+            else if (u is Catapult)
+            {
+                _hp.Add(u, 70);
+            }
+            else if (u is Horseman)
+            {
+                _hp.Add(u, 200);
+            }
+            else if (u is Swordsman)
+            {
+                _hp.Add(u, 100);
+            }
+            else
+                throw new ArgumentException("Неизвестный тип");
         }
 
         /// <summary>
