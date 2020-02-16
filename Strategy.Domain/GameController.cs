@@ -31,7 +31,6 @@ namespace Strategy.Domain
             _map = map;
         }
 
-        //TODO: заменить просто просмотром свойства UnitCoordinates
         /// <summary>
         /// Получить координаты объекта.
         /// </summary>
@@ -40,12 +39,10 @@ namespace Strategy.Domain
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
             if (TargetObject is GameUnit unit)
-                return new Coordinates(unit.X, unit.Y);
-
+                return unit.UnitCoordinates;
             throw new ArgumentException("Неизвестный тип");
         }
 
-        //TODO: заменить на вызов CanMoveTo объекта или класса PlayableUnit
         /// <summary>
         /// Может ли юнит передвинуться в указанную клетку.
         /// </summary>
@@ -58,49 +55,26 @@ namespace Strategy.Domain
         /// </returns>
         public bool CanMoveUnit(object unit, int x, int y)
         {
-            if (unit is PlayableUnit archer)
-            {
-                if (Math.Abs(archer.UnitCoordinates.X - x) > archer.MaxMoveDX || Math.Abs(archer.Y - y) > archer.MaxMoveDY)
-                    return false;
-            }
-            else
-                throw new ArgumentException("Неизвестный тип");
-
-            
-
-            //проверка, находится ли на указанном месте вода.
-            foreach (object g in _map.Ground)
-            {
-                if (g is Water w && w.UnitCoordinates.X == x && w.UnitCoordinates.Y == y)
-                    return false;
-            }
-
-            //проверка, не находися ли в указанной клетке еще один юнит.
-            foreach (object u1 in _map.Units)
-            {
-                if (u1 is Archer a1)
-                {
-                    
-                    if (a1.UnitCoordinates.X == x && a1.UnitCoordinates.Y == y)
-                        return false;
-                }
-                else if (u1 is Catapult c1)
-                {
-                    if (c1.X == x && c1.Y == y)
-                        return false;
-                }
-                else if (u1 is Horseman h1)
-                {
-                    if (h1.X == x && h1.Y == y)
-                        return false;
-                }
-                else if (u1 is Swordsman s1)
-                {
-                    if (s1.X == x && s1.Y == y)
-                        return false;
-                }
+            Coordinates MoveTargetCoordinates = new Coordinates(x, y);
+            if (unit is PlayableUnit PlayableUnit)
+                if (PlayableUnit.CanMoveTo(x, y)) return false;
                 else
                     throw new ArgumentException("Неизвестный тип");
+
+            //проверка, не находится ли в указанной клетке вода.
+            foreach (object CurObject in _map.Ground)
+            {
+                if (CurObject is Water FoundWater && FoundWater.UnitCoordinates == MoveTargetCoordinates)
+                    return false;
+            }
+
+            //проверка, не находится ли в указанной клетке еще один юнит.
+            foreach (object CurUnit in _map.Units)
+            {
+                if (!(CurUnit is PlayableUnit CurPlayableUnit)) continue;
+                if (CurPlayableUnit.UnitCoordinates == MoveTargetCoordinates)
+                    return false;
+                throw new ArgumentException("Неизвестный тип");
             }
 
             return true;
@@ -119,15 +93,11 @@ namespace Strategy.Domain
                 return;
 
             if (unit is PlayableUnit playableunit)
-            {
-                playableunit.X = x;
-                playableunit.Y = y;
-            }
+                playableunit.MoveTo(x, y);
             else
                 throw new ArgumentException("Неизвестный тип");
         }
 
-        //TODO: удалить и заменить на вызов функции CanAttack у объекта PlayableUnit
         /// <summary>
         /// Проверить, может ли один юнит атаковать другого.
         /// </summary>
@@ -139,71 +109,24 @@ namespace Strategy.Domain
         /// </returns>
         public bool CanAttackUnit(object AttackingUnit, object TargetUnit)
         {
-            Coordinates cr = GetObjectCoordinates(TargetUnit);
             Player TargetUnitPlayer;
-            if (TargetUnit is PlayableUnit playableunit)
-            {
-                 TargetUnitPlayer = playableunit.Player;
-            }
+            PlayableUnit TargetPlayableUnit = TargetUnit as PlayableUnit;
+            if (!(TargetPlayableUnit is null))
+                TargetUnitPlayer = TargetPlayableUnit.Player;
             else
                 throw new ArgumentException("Неизвестный тип");
 
-            if (IsDead(TargetUnit))
+            //если юнит уже помер, то и атаковать его нет смысла
+            if (TargetPlayableUnit.IsDead)
                 return false;
 
-            if (AttackingUnit is Archer a1)
-            {
-                if (a1.Player == TargetUnitPlayer)
-                    return false;
+            if (!(AttackingUnit is PlayableUnit AttackingPlayableUnit))
+                throw new ArgumentException("Неизвестный тип");
 
-                int dx = a1.X - cr.X;
-                int dy = a1.Y - cr.Y;
-
-                //return dx >= -5 && dx <= 5 && dy >= -5 && dy <= 5;
-                return Math.Abs(dx)<=5 && Math.Abs(dy) <= 5;
-            }
-
-            if (AttackingUnit is Catapult c1)
-            {
-                if (c1.Player == TargetUnitPlayer)
-                    return false;
-
-                int dx = c1.X - cr.X;
-                int dy = c1.Y - cr.Y;
-
-                return Math.Abs(dx) <= 10 && Math.Abs(dy) <= 10;
-            }
-
-            if (AttackingUnit is Horseman h1)
-            {
-                if (h1.Player == TargetUnitPlayer)
-                    return false;
-
-                int dx = h1.X - cr.X;
-                int dy = h1.Y - cr.Y;
-
-                //return (dx == -1 || dx == 0 || dx == 1) &&
-                //       (dy == -1 || dy == 0 || dy == 1);
-                return Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1;
-            }
-
-            if (AttackingUnit is Swordsman s1)
-            {
-                if (s1.Player == TargetUnitPlayer)
-                    return false;
-
-                int dx = s1.X - cr.X;
-                int dy = s1.Y - cr.Y;
-
-                //return (dx == -1 || dx == 0 || dx == 1) &&
-                //       (dy == -1 || dy == 0 || dy == 1);
-                return Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1;
-            }
-
-            throw new ArgumentException("Неизвестный тип");
+            return AttackingPlayableUnit.Player != TargetUnitPlayer &&
+                   AttackingPlayableUnit.CanAtack(TargetPlayableUnit);
         }
 
-        //TODO: удалить и заменить на вызов функции Attack у объекта PlayableUnit
         /// <summary>
         /// Атаковать указанного юнита.
         /// </summary>
@@ -214,149 +137,34 @@ namespace Strategy.Domain
             if (!CanAttackUnit(AttackingUnit, TargetUnit))
                 return;
 
-            InitializeUnitHp(TargetUnit);
-            int targethp = _hp[TargetUnit];
-            Coordinates coordinates = GetObjectCoordinates(TargetUnit);
-            int d = 0;
-
-            if (AttackingUnit is Archer archer)
-            {
-                d = 50;
-
-                int dx = archer.X - coordinates.X;
-                int dy = archer.Y - coordinates.Y;
-
-                //if ((dx == -1 || dx == 0 || dx == 1) &&
-                //    (dy == -1 || dy == 0 || dy == 1))
-                if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
-                {
-                    d /= 2;
-                }
-            }
-            else if (AttackingUnit is Catapult catapult)
-            {
-                d = 100;
-
-                int dx = catapult.X - coordinates.X;
-                int dy = catapult.Y - coordinates.Y;
-
-                //if ((dx == -1 || dx == 0 || dx == 1) &&
-                //    (dy == -1 || dy == 0 || dy == 1))
-                if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
-                {
-                    d /= 2;
-                }
-            }
-            else if (AttackingUnit is Horseman)
-            {
-                d = 75;
-            }
-            else if (AttackingUnit is Swordsman)
-            {
-                d = 50;
-            }
-            else
+            if (!(AttackingUnit is PlayableUnit AttackingPlayableUnit) ||
+                !(TargetUnit is PlayableUnit TargetPlayableUnit))
                 throw new ArgumentException("Неизвестный тип");
-
-            _hp[TargetUnit] = Math.Max(targethp - d, 0);
+            AttackingPlayableUnit.Attack(TargetPlayableUnit);
         }
 
-        //TODO: необходимо в конструкторе каждого юнита автоматически прописывать
-        //imagesource?
         /// <summary>
         /// Получить изображение объекта.
         /// </summary>
         public ImageSource GetObjectSource(object target_object)
         {
-            if (target_object is Archer)
+            switch (target_object)
             {
-                if (IsDead(target_object))
-                    return _deadUnitSource;
-
-                return _archerSource;
+                case Archer Archer:
+                    return Archer.IsDead ? _deadUnitSource : _archerSource;
+                case Catapult Catapult:
+                    return Catapult.IsDead ? _deadUnitSource : _catapultSource;
+                case Horseman Horseman:
+                    return Horseman.IsDead ? _deadUnitSource : _horsemanSource;
+                case Swordsman Swordsman:
+                    return Swordsman.IsDead ? _deadUnitSource : _swordsmanSource;
+                case Grass _:
+                    return _grassSource;
+                case Water _:
+                    return _waterSource;
+                default:
+                    throw new ArgumentException("Неизвестный тип");
             }
-
-            if (target_object is Catapult)
-            {
-                if (IsDead(target_object))
-                    return _deadUnitSource;
-
-                return _catapultSource;
-            }
-
-            if (target_object is Horseman)
-            {
-                if (IsDead(target_object))
-                    return _deadUnitSource;
-
-                return _horsemanSource;
-            }
-
-            if (target_object is Swordsman)
-            {
-                if (IsDead(target_object))
-                    return _deadUnitSource;
-
-                return _swordsmanSource;
-            }
-
-            if (target_object is Grass)
-            {
-                return _grassSource;
-            }
-
-            if (target_object is Water)
-            {
-                return _waterSource;
-            }
-
-            throw new ArgumentException("Неизвестный тип");
-        }
-
-        /// <summary>
-        /// Проверить, что указанный юнит умер.
-        /// </summary>
-        /// <param name="u">Юнит.</param>
-        /// <returns>
-        /// <see langvalue="true" />, если у юнита не осталось очков здоровья,
-        /// <see langvalue="false" /> - иначе.
-        /// </returns>
-        private bool IsDead(object u)
-        {
-            if (_hp.TryGetValue(u, out int hp))
-                return hp == 0;
-
-            InitializeUnitHp(u);
-            return false;
-        }
-
-        /// <summary>
-        /// Инициализировать здоровье юнита.
-        /// </summary>
-        /// <param name="u">Юнит.</param>
-        private void InitializeUnitHp(object u)
-        {
-            if (_hp.ContainsKey(u))
-                return;
-
-            if (u is Archer)
-            {
-                _hp.Add(u, 50);
-            }
-            else if (u is Catapult)
-            {
-                _hp.Add(u, 70);
-            }
-            else if (u is Horseman)
-            {
-                _hp.Add(u, 200);
-            }
-            else if (u is Swordsman)
-            {
-                _hp.Add(u, 100);
-            }
-            else
-                throw new ArgumentException("Неизвестный тип");
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Strategy.Domain.Models
+﻿using System;
+
+namespace Strategy.Domain.Models
 {
     /// <summary>
     /// Класс всадника.
@@ -11,10 +13,18 @@
         /// <param name="player">Игрок, упровляющий всадником.</param>
         public Horseman(Player player) : base(player)
         {
-            MaxMoveDX = MaxMoveDY = 10;
-            MaxAttackDX = MaxAttackDY = 1;
+            MaxMove = 10;
+            MaxAttack = 1;
             HP = 200;
             Damage = 75;
+        }
+
+        //TODO: проверки на NULL?
+        public override void Attack(PlayableUnit Other)
+        {
+            if (!CanAtack(Other)) return;
+            Other.HP = Math.Max(0, Other.HP - Damage);
+
         }
 
     }

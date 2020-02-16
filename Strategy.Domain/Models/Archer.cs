@@ -14,19 +14,19 @@ namespace Strategy.Domain.Models
         /// <param name="player">Игрок, к которому привязан лучник.</param>
         public Archer(Player player) : base(player)
         {
-            MaxMoveDX = MaxMoveDY = 3;
-            MaxAttackDX = MaxAttackDY = 5;
+            MaxMove = 3;
+            MaxAttack = 5;
             HP = 50;
             Damage = 50;
         }
 
-
+        //TODO: проверки на NULL?
         public override void Attack(PlayableUnit Other)
         {
-            
+            if (!CanAtack(Other)) return;
             int dx = Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X);
             int dy = Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y);
-
+            Other.HP = Math.Max(0, Other.HP - (dx <= 1 && dy <= 1 ? Damage : Damage / 2));
 
         }
     }

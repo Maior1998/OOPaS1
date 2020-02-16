@@ -1,4 +1,6 @@
-﻿namespace Strategy.Domain.Models
+﻿using System;
+
+namespace Strategy.Domain.Models
 {
     /// <summary>
     /// Класс мечника.
@@ -12,10 +14,19 @@
         /// <param name="player">Игрок, управляющий мечником.</param>
         public Swordsman(Player player) : base(player)
         {
-            MaxMoveDX = MaxAttackDY = 5;
-            MaxAttackDX = MaxAttackDY = 1;
+            MaxMove = 5;
+            MaxAttack = 1;
             HP = 100;
             Damage = 50;
         }
+
+        //TODO: проверки на NULL?
+        public override void Attack(PlayableUnit Other)
+        {
+            if (!CanAtack(Other)) return;
+            Other.HP = Math.Max(0, Other.HP - Damage);
+
+        }
+
     }
 }

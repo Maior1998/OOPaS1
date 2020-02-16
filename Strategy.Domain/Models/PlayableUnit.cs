@@ -13,14 +13,24 @@ namespace Strategy.Domain.Models
     public abstract class PlayableUnit : GameUnit
     {
         /// <summary>
-        /// Инициализирует новый игровой юнит с заданными параметрами.
+        /// Инициализирует новый игровой юнит.
         /// </summary>
         /// <param name="player">Игрок, управляющий юнитом.</param>
-        /// <param name="maxdx">Максимальная дистанция ходьбы юнита по горизонтали.</param>
-        /// <param name="maxdy">Максимальная дистанция ходьбы юнита по вертикали.</param>
         protected PlayableUnit(Player player)
         {
             Player = player;
+        }
+
+        /// <summary>
+        /// Инициализирует новый игровой юнит с заданными параметрами.
+        /// </summary>
+        /// <param name="player">Игрок, управляющий юнитом.</param>
+        /// <param name="x">Координата X создаваемого юнита.</param>
+        /// <param name="y">Координата Y создаваемого юнита.</param>
+        protected PlayableUnit(Player player, int x, int y) : this(player)
+        {
+            UnitCoordinates.X = x;
+            UnitCoordinates.Y = y;
         }
 
         /// <summary>
@@ -29,24 +39,15 @@ namespace Strategy.Domain.Models
         public Player Player { get; set; }
 
         /// <summary>
-        /// Определяет максимальную длину перемещения юнита по горизонтали.
+        /// Определяет максимальную длину перемещения юнита.
         /// </summary>
-        public int MaxMoveDX { get; protected set; }
+        public int MaxMove { get; protected set; }
 
         /// <summary>
-        /// Определяет максимальную длину перемещения юнита по вертикали.
+        /// Определяет максимальную длину атаки юнита.
         /// </summary>
-        public int MaxMoveDY { get; protected set; }
+        public int MaxAttack { get; protected set; }
 
-        /// <summary>
-        /// Определяет максимальную длину атаки юнита по горизонтали.
-        /// </summary>
-        public int MaxAttackDX { get; protected set; }
-
-        /// <summary>
-        /// Определяет максимальную длину атаки юнита по вертикали.
-        /// </summary>
-        public int MaxAttackDY { get; protected set; }
 
         /// <summary>
         /// Урон, наносимый юнитом.
@@ -81,8 +82,8 @@ namespace Strategy.Domain.Models
         /// <returns></returns>
         public bool CanAtack(PlayableUnit Other)
         {
-            return Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X) <= MaxAttackDX &&
-                   Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y) <= MaxAttackDY;
+            return Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X) <= MaxAttack &&
+                   Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y) <= MaxAttack;
         }
 
         //public static bool CanMoveTo(object unit, int x, int y) =>  CanMoveTo(unit as PlayableUnit, x, y);
@@ -105,8 +106,8 @@ namespace Strategy.Domain.Models
         public static bool CanMoveTo(PlayableUnit unit, int x, int y)
         {
             if (unit == null) return false;
-            return Math.Abs(unit.UnitCoordinates.X - x) <= unit.MaxMoveDX &&
-                   Math.Abs(unit.UnitCoordinates.Y - y) <= unit.MaxMoveDY;
+            return Math.Abs(unit.UnitCoordinates.X - x) <= unit.MaxMove &&
+                   Math.Abs(unit.UnitCoordinates.Y - y) <= unit.MaxMove;
         }
 
         /// <summary>
