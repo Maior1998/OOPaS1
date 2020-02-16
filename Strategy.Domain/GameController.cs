@@ -14,9 +14,6 @@ namespace Strategy.Domain
 
         private readonly Map _map;
 
-        // Очки жизни каждого юнита.
-        private readonly Dictionary<object, int> _hp = new Dictionary<object, int>();
-
         private readonly ImageSource _archerSource = BuildSourceFromPath("Resources/Units/Archer.png");
         private readonly ImageSource _catapultSource = BuildSourceFromPath("Resources/Units/Catapult.png");
         private readonly ImageSource _horsemanSource = BuildSourceFromPath("Resources/Units/Horseman.png");
@@ -43,7 +40,7 @@ namespace Strategy.Domain
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
             if (TargetObject is GameUnit unit)
-                return new Coordinates(unit.X, unit.Y);
+                return new Coordinates(unit.UnitCoordinates.X, unit.UnitCoordinates.Y);
 
             throw new ArgumentException("Неизвестный тип");
         }
@@ -62,17 +59,18 @@ namespace Strategy.Domain
         {
             if (unit is PlayableUnit archer)
             {
-                if (Math.Abs(archer.X - x) > archer.MaxMoveDX || Math.Abs(archer.Y - y) > archer.MaxMoveDY)
+                if (Math.Abs(archer.UnitCoordinates.X - x) > archer.MaxMoveDX || Math.Abs(archer.Y - y) > archer.MaxMoveDY)
                     return false;
             }
             else
                 throw new ArgumentException("Неизвестный тип");
 
+            
 
             //проверка, находится ли на указанном месте вода.
             foreach (object g in _map.Ground)
             {
-                if (g is Water w && w.X == x && w.Y == y)
+                if (g is Water w && w.UnitCoordinates.X == x && w.UnitCoordinates.Y == y)
                     return false;
             }
 
@@ -81,7 +79,8 @@ namespace Strategy.Domain
             {
                 if (u1 is Archer a1)
                 {
-                    if (a1.X == x && a1.Y == y)
+                    
+                    if (a1.UnitCoordinates.X == x && a1.UnitCoordinates.Y == y)
                         return false;
                 }
                 else if (u1 is Catapult c1)
@@ -307,52 +306,6 @@ namespace Strategy.Domain
             }
 
             throw new ArgumentException("Неизвестный тип");
-        }
-
-        /// <summary>
-        /// Проверить, что указанный юнит умер.
-        /// </summary>
-        /// <param name="u">Юнит.</param>
-        /// <returns>
-        /// <see langvalue="true" />, если у юнита не осталось очков здоровья,
-        /// <see langvalue="false" /> - иначе.
-        /// </returns>
-        private bool IsDead(object u)
-        {
-            if (_hp.TryGetValue(u, out int hp))
-                return hp == 0;
-
-            InitializeUnitHp(u);
-            return false;
-        }
-
-        /// <summary>
-        /// Инициализировать здоровье юнита.
-        /// </summary>
-        /// <param name="u">Юнит.</param>
-        private void InitializeUnitHp(object u)
-        {
-            if (_hp.ContainsKey(u))
-                return;
-
-            if (u is Archer)
-            {
-                _hp.Add(u, 50);
-            }
-            else if (u is Catapult)
-            {
-                _hp.Add(u, 70);
-            }
-            else if (u is Horseman)
-            {
-                _hp.Add(u, 200);
-            }
-            else if (u is Swordsman)
-            {
-                _hp.Add(u, 100);
-            }
-            else
-                throw new ArgumentException("Неизвестный тип");
         }
 
         /// <summary>
