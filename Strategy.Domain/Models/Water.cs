@@ -1,6 +1,6 @@
 ﻿namespace Strategy.Domain.Models
 {
-    //TODO: вода или поверхность?
+    //TODO: так вода или поверхность?
     /// <summary>
     /// Непроходимая наземная поверхность.
     /// </summary>
@@ -12,6 +12,16 @@
         /// </summary>
         public Water()
         {
+        }
+
+        /// <summary>
+        /// Создает новый объект воды по указанным координатам.
+        /// </summary>
+        /// <param name="x">Координата X воды.</param>
+        /// <param name="y">Координата Y воды.</param>
+        public Water(int x, int y)
+        {
+            UnitCoordinates=new Coordinates(x,y);
         }
     }
 }

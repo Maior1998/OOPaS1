@@ -57,8 +57,10 @@ namespace Strategy.Domain
         {
             Coordinates MoveTargetCoordinates = new Coordinates(x, y);
             if (unit is PlayableUnit PlayableUnit)
-                if (PlayableUnit.CanMoveTo(x, y)) return false;
-                else
+            {
+                if (!PlayableUnit.CanMoveTo(x, y)) return false;
+            }
+            else
                     throw new ArgumentException("Неизвестный тип");
 
             //проверка, не находится ли в указанной клетке вода.
@@ -71,10 +73,11 @@ namespace Strategy.Domain
             //проверка, не находится ли в указанной клетке еще один юнит.
             foreach (object CurUnit in _map.Units)
             {
-                if (!(CurUnit is PlayableUnit CurPlayableUnit)) continue;
+                if (!(CurUnit is PlayableUnit CurPlayableUnit)) 
+                    throw new ArgumentException("Неизвестный тип");
                 if (CurPlayableUnit.UnitCoordinates == MoveTargetCoordinates)
                     return false;
-                throw new ArgumentException("Неизвестный тип");
+                
             }
 
             return true;

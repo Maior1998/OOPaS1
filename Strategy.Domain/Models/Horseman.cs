@@ -19,6 +19,17 @@ namespace Strategy.Domain.Models
             Damage = 75;
         }
 
+        /// <summary>
+        /// Инициализирует нового всадника, управляемого заданным игроком и расположенного на заданных координатах.
+        /// </summary>
+        /// <param name="player">Игрок, к которому привязан всадник.</param>
+        /// <param name="x">Координата X позиции всадника.</param>
+        /// <param name="y">Координата Y позиции всадника.</param>
+        public Horseman(Player player, int x, int y) : this(player)
+        {
+            UnitCoordinates = new Coordinates(x, y);
+        }
+
         //TODO: проверки на NULL?
         public override void Attack(PlayableUnit Other)
         {

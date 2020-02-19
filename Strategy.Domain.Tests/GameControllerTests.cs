@@ -23,33 +23,33 @@ namespace Strategy.Domain.Tests
             GameController gameController = new GameController(map);
 
 
-            Archer archer = new Archer(player) { X = 1, Y = 2 };
+            Archer archer = new Archer(player,1,2);
             Coordinates archerCoordinates = gameController.GetObjectCoordinates(archer);
             Assert.AreEqual(1, archerCoordinates.X);
             Assert.AreEqual(2, archerCoordinates.Y);
 
-            Catapult catapult = new Catapult(player) { X = 3, Y = 4 };
+            Catapult catapult = new Catapult(player,3,4);
             Coordinates catapultCoordinates = gameController.GetObjectCoordinates(catapult);
             Assert.AreEqual(3, catapultCoordinates.X);
             Assert.AreEqual(4, catapultCoordinates.Y);
 
-            Horseman horseman = new Horseman(player) { X = 5, Y = 6 };
+            Horseman horseman = new Horseman(player,5,6);
             Coordinates horsemanCoordinates = gameController.GetObjectCoordinates(horseman);
             Assert.AreEqual(5, horsemanCoordinates.X);
             Assert.AreEqual(6, horsemanCoordinates.Y);
 
-            Swordsman swordsman = new Swordsman(player) { X = 7, Y = 8 };
+            Swordsman swordsman = new Swordsman(player,7,8);
             Coordinates swordsmanCoordinates = gameController.GetObjectCoordinates(swordsman);
             Assert.AreEqual(7, swordsmanCoordinates.X);
             Assert.AreEqual(8, swordsmanCoordinates.Y);
 
 
-            Grass grass = new Grass { X = 9, Y = 10 };
+            Grass grass = new Grass(9, 10);
             Coordinates grassCoordinates = gameController.GetObjectCoordinates(grass);
             Assert.AreEqual(9, grassCoordinates.X);
             Assert.AreEqual(10, grassCoordinates.Y);
 
-            Water water = new Water { X = 11, Y = 12 };
+            Water water = new Water(11,12);
             Coordinates waterCoordinates = gameController.GetObjectCoordinates(water);
             Assert.AreEqual(11, waterCoordinates.X);
             Assert.AreEqual(12, waterCoordinates.Y);
@@ -78,7 +78,7 @@ namespace Strategy.Domain.Tests
             const int startPositionY = 10;
 
             Player player = new Player(1, "Игрок №1", null);
-            Archer archer = new Archer(player) { X = startPositionX, Y = startPositionY };
+            Archer archer = new Archer(player, startPositionX, startPositionY);
             Map map = CreateMap(units: new[] { archer });
             GameController gameController = new GameController(map);
 
@@ -104,7 +104,7 @@ namespace Strategy.Domain.Tests
             const int startPositionY = 10;
 
             Player player = new Player(1, "Игрок №1", null);
-            Catapult catapult = new Catapult(player) { X = startPositionX, Y = startPositionY };
+            Catapult catapult = new Catapult(player, startPositionX, startPositionY);
             Map map = CreateMap(units: new[] { catapult });
             GameController gameController = new GameController(map);
 
@@ -130,7 +130,7 @@ namespace Strategy.Domain.Tests
             const int startPositionY = 20;
 
             Player player = new Player(1, "Игрок №1", null);
-            Horseman horseman = new Horseman(player) { X = startPositionX, Y = startPositionY };
+            Horseman horseman = new Horseman(player, startPositionX, startPositionY);
             Map map = CreateMap(units: new[] { horseman });
             GameController gameController = new GameController(map);
 
@@ -156,7 +156,7 @@ namespace Strategy.Domain.Tests
             const int startPositionY = 10;
 
             Player player = new Player(1, "Игрок №1", null);
-            Swordsman swordsman = new Swordsman(player) { X = startPositionX, Y = startPositionY };
+            Swordsman swordsman = new Swordsman(player, startPositionX, startPositionY);
             Map map = CreateMap(units: new[] { swordsman });
             GameController gameController = new GameController(map);
 
@@ -173,14 +173,15 @@ namespace Strategy.Domain.Tests
             const int grassPositionY = 15;
 
             Player player = new Player(1, "Игрок №1", null);
-            Swordsman swordsman = new Swordsman(player) { X = 10, Y = 10 };
-            Grass grass = new Grass() { X = grassPositionX, Y = grassPositionY };
+            Swordsman swordsman = new Swordsman(player,10,10);
+            Grass grass = new Grass(grassPositionX, grassPositionY);
             Map map = CreateMap(new[] { grass }, new[] { swordsman });
             GameController gameController = new GameController(map);
 
             Assert.True(gameController.CanMoveUnit(swordsman, grassPositionX, grassPositionY));
         }
 
+        //TODO: да епт, это трава или вода, че происходит вообще
         /// <summary>
         /// Проверить, что юнит может переместиться на клетку с травой.
         /// </summary>
@@ -191,8 +192,8 @@ namespace Strategy.Domain.Tests
             const int waterPositionY = 15;
 
             Player player = new Player(1, "Игрок №1", null);
-            Swordsman swordsman = new Swordsman(player) { X = 10, Y = 10 };
-            Water water = new Water() { X = waterPositionX, Y = waterPositionY };
+            Swordsman swordsman = new Swordsman(player,10,10);
+            Water water = new Water(waterPositionX, waterPositionY);
             Map map = CreateMap(new []{ water }, new []{ swordsman });
             GameController gameController = new GameController(map);
 
@@ -209,8 +210,8 @@ namespace Strategy.Domain.Tests
             const int horsemanPositionY = 15;
 
             Player player = new Player(1, "Игрок №1", null);
-            Catapult catapult = new Catapult(player) { X = 10, Y = 10 };
-            Horseman horseman = new Horseman(player) { X = horsemanPositionX, Y = horsemanPositionY };
+            Catapult catapult = new Catapult(player,10,10);
+            Horseman horseman = new Horseman(player, horsemanPositionX, horsemanPositionY);
             Map map = CreateMap(units: new object[] { catapult, horseman });
             GameController gameController = new GameController(map);
 
@@ -235,25 +236,25 @@ namespace Strategy.Domain.Tests
             GameController gameController = new GameController(map);
 
 
-            Archer archer = new Archer(player) { X = 14, Y = 14 };
+            Archer archer = new Archer(player,14,14);
             gameController.MoveUnit(archer, movePositionX, movePositionY);
-            Assert.AreEqual(movePositionX, archer.X);
-            Assert.AreEqual(movePositionY, archer.Y);
+            Assert.AreEqual(movePositionX, archer.UnitCoordinates.X);
+            Assert.AreEqual(movePositionY, archer.UnitCoordinates.Y);
 
-            Catapult catapult = new Catapult(player) { X = 14, Y = 14 };
+            Catapult catapult = new Catapult(player,14,14);
             gameController.MoveUnit(catapult, movePositionX, movePositionY);
-            Assert.AreEqual(movePositionX, catapult.X);
-            Assert.AreEqual(movePositionY, catapult.Y);
+            Assert.AreEqual(movePositionX, catapult.UnitCoordinates.X);
+            Assert.AreEqual(movePositionY, catapult.UnitCoordinates.Y);
 
-            Horseman horseman = new Horseman(player) { X = 14, Y = 14 };
+            Horseman horseman = new Horseman(player,14,14) ;
             gameController.MoveUnit(horseman, movePositionX, movePositionY);
-            Assert.AreEqual(movePositionX, horseman.X);
-            Assert.AreEqual(movePositionY, horseman.Y);
+            Assert.AreEqual(movePositionX, horseman.UnitCoordinates.X);
+            Assert.AreEqual(movePositionY, horseman.UnitCoordinates.Y);
 
-            Swordsman swordsman = new Swordsman(player) { X = 14, Y = 14 };
+            Swordsman swordsman = new Swordsman(player,14,14);
             gameController.MoveUnit(swordsman, movePositionX, movePositionY);
-            Assert.AreEqual(movePositionX, swordsman.X);
-            Assert.AreEqual(movePositionY, swordsman.Y);
+            Assert.AreEqual(movePositionX, swordsman.UnitCoordinates.X);
+            Assert.AreEqual(movePositionY, swordsman.UnitCoordinates.Y);
         }
 
         #endregion
@@ -279,8 +280,8 @@ namespace Strategy.Domain.Tests
 
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Archer archer = new Archer(player1) { X = startPositionX, Y = startPositionY };
-            Archer target = new Archer(player2) { X = x, Y = y };
+            Archer archer = new Archer(player1, startPositionX, startPositionY);
+            Archer target = new Archer(player2,x,y);
             Map map = CreateMap(units: new object[] { archer, target });
             GameController gameController = new GameController(map);
 
@@ -306,8 +307,8 @@ namespace Strategy.Domain.Tests
 
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Catapult catapult = new Catapult(player1) { X = startPositionX, Y = startPositionY };
-            Archer target = new Archer(player2) { X = x, Y = y };
+            Catapult catapult = new Catapult(player1, startPositionX, startPositionY);
+            Archer target = new Archer(player2,x,y);
             Map map = CreateMap(units: new object[] { catapult, target });
             GameController gameController = new GameController(map);
 
@@ -333,8 +334,8 @@ namespace Strategy.Domain.Tests
 
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Horseman horseman = new Horseman(player1) { X = startPositionX, Y = startPositionY };
-            Archer target = new Archer(player2) { X = x, Y = y };
+            Horseman horseman = new Horseman(player1, startPositionX, startPositionY);
+            Archer target = new Archer(player2,x,y);
             Map map = CreateMap(units: new object[] { horseman, target });
             GameController gameController = new GameController(map);
 
@@ -360,8 +361,8 @@ namespace Strategy.Domain.Tests
 
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Swordsman swordsman = new Swordsman(player1) { X = startPositionX, Y = startPositionY };
-            Archer target = new Archer(player2) { X = x, Y = y };
+            Swordsman swordsman = new Swordsman(player1, startPositionX, startPositionY);
+            Archer target = new Archer(player2, x, y);
             Map map = CreateMap(units: new object[] { swordsman, target });
             GameController gameController = new GameController(map);
 
@@ -375,8 +376,8 @@ namespace Strategy.Domain.Tests
         public void CanAttackUnit_ArcherAttackFriend_False()
         {
             Player player = new Player(1, "Игрок №1", null);
-            Archer archer = new Archer(player) { X = 10, Y = 10 };
-            Archer target = new Archer(player) { X = 11, Y = 11 };
+            Archer archer = new Archer(player,10,10);
+            Archer target = new Archer(player,11,11);
             Map map = CreateMap(units: new [] { archer, target });
             GameController gameController = new GameController(map);
 
@@ -395,25 +396,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Archer archer = new Archer(player1) { X = 8, Y = 8 };
+            Archer archer = new Archer(player1,8,8);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за один удар.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, archer, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за два удара.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, archer, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 4 удара.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(4, GetAttacksCount(gameController, archer, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за два удара.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, archer, swordsmanTarget));
         }
 
@@ -425,25 +426,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Catapult catapult = new Catapult(player1) { X = 8, Y = 8 };
+            Catapult catapult = new Catapult(player1,8,8);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за один удар.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, catapult, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за один удар.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, catapult, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 2 удара.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, catapult, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за один удар.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, catapult, swordsmanTarget));
         }
 
@@ -455,25 +456,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Horseman horseman = new Horseman(player1) { X = 9, Y = 9 };
+            Horseman horseman = new Horseman(player1,9,9);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за один удар.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, horseman, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за один удар.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, horseman, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 3 удара.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(3, GetAttacksCount(gameController, horseman, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за два удара.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, horseman, swordsmanTarget));
         }
 
@@ -485,25 +486,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Swordsman swordsman = new Swordsman(player1) { X = 9, Y = 9 };
+            Swordsman swordsman = new Swordsman(player1,9,9);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за один удар.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, swordsman, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за два удара.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, swordsman, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 4 удара.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(4, GetAttacksCount(gameController, swordsman, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за два удара.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, swordsman, swordsmanTarget));
         }
 
@@ -515,25 +516,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Archer archer = new Archer(player1) { X = 9, Y = 9 };
+            Archer archer = new Archer(player1,9,9);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за два удара.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, archer, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за три удара.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(3, GetAttacksCount(gameController, archer, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 8 ударов.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(8, GetAttacksCount(gameController, archer, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за 4 удара.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(4, GetAttacksCount(gameController, archer, swordsmanTarget));
         }
 
@@ -545,25 +546,25 @@ namespace Strategy.Domain.Tests
         {
             Player player1 = new Player(1, "Игрок №1", null);
             Player player2 = new Player(2, "Игрок №2", null);
-            Catapult catapult = new Catapult(player1) { X = 9, Y = 9 };
+            Catapult catapult = new Catapult(player1, 9, 9);
             Map map = CreateMap();
             GameController gameController = new GameController(map);
 
 
             // Лучник имеет 50 жизней. Погибнет за один удар.
-            Archer archerTarget = new Archer(player2) { X = 10, Y = 10 };
+            Archer archerTarget = new Archer(player2,10,10);
             Assert.AreEqual(1, GetAttacksCount(gameController, catapult, archerTarget));
 
             // Катапульта имеет 75 жизней. Погибнет за два удара.
-            Catapult catapultTarget = new Catapult(player2) { X = 10, Y = 10 };
+            Catapult catapultTarget = new Catapult(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, catapult, catapultTarget));
 
             // Всадник имеет 200 жизней. Необходимо 4 удара.
-            Horseman horsemanTarget = new Horseman(player2) { X = 10, Y = 10 };
+            Horseman horsemanTarget = new Horseman(player2,10,10);
             Assert.AreEqual(4, GetAttacksCount(gameController, catapult, horsemanTarget));
 
             // Мечник имеет 100 жизней. Погибнет за два удара.
-            Swordsman swordsmanTarget = new Swordsman(player2) { X = 10, Y = 10 };
+            Swordsman swordsmanTarget = new Swordsman(player2,10,10);
             Assert.AreEqual(2, GetAttacksCount(gameController, catapult, swordsmanTarget));
         }
 
@@ -580,11 +581,11 @@ namespace Strategy.Domain.Tests
         /// </remarks>
         private static int GetAttacksCount(GameController gameController, object attackerUnit, object targetUnit)
         {
-            var count = 0;
+            int count = 0;
             while (gameController.CanAttackUnit(attackerUnit, targetUnit))
             {
                 gameController.AttackUnit(attackerUnit, targetUnit);
-                ++count;
+                count++;
             }
 
             return count;

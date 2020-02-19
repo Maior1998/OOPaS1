@@ -22,18 +22,6 @@ namespace Strategy.Domain.Models
         }
 
         /// <summary>
-        /// Инициализирует новый игровой юнит с заданными параметрами.
-        /// </summary>
-        /// <param name="player">Игрок, управляющий юнитом.</param>
-        /// <param name="x">Координата X создаваемого юнита.</param>
-        /// <param name="y">Координата Y создаваемого юнита.</param>
-        protected PlayableUnit(Player player, int x, int y) : this(player)
-        {
-            UnitCoordinates.X = x;
-            UnitCoordinates.Y = y;
-        }
-
-        /// <summary>
         /// Игрок, управляющий юнитом.
         /// </summary>
         public Player Player { get; set; }
@@ -62,7 +50,7 @@ namespace Strategy.Domain.Models
         /// <summary>
         /// Определяет, не умер ли юнит.
         /// </summary>
-        public bool IsDead => HP != 0;
+        public bool IsDead => HP == 0;
 
         /// <summary>
         /// Изображение мертвого юнита. Применимо только для играбельных юнитов.

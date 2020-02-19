@@ -11,6 +11,16 @@
         public Grass()
         {
         }
+
+        /// <summary>
+        /// Создает новый объект травы по указанным координатам.
+        /// </summary>
+        /// <param name="x">Координата X травы.</param>
+        /// <param name="y">Координата Y травы.</param>
+        public Grass(int x, int y)
+        {
+            UnitCoordinates=new Coordinates(x,y);
+        }
         
     }
 }

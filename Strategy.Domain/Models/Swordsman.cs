@@ -20,6 +20,17 @@ namespace Strategy.Domain.Models
             Damage = 50;
         }
 
+        /// <summary>
+        /// Инициализирует нового мечника, управляемого заданным игроком и расположенного на заданных координатах.
+        /// </summary>
+        /// <param name="player">Игрок, к которому привязан мечник.</param>
+        /// <param name="x">Координата X позиции мечника.</param>
+        /// <param name="y">Координата Y позиции мечника.</param>
+        public Swordsman(Player player, int x, int y) : this(player)
+        {
+            UnitCoordinates = new Coordinates(x, y);
+        }
+
         //TODO: проверки на NULL?
         public override void Attack(PlayableUnit Other)
         {
