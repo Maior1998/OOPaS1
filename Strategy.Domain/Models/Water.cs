@@ -1,6 +1,6 @@
 ﻿namespace Strategy.Domain.Models
 {
-    //TODO: так вода или поверхность?
+    //TODO: так вода или поверхность? это такая отсылка к Battletoads?
     /// <summary>
     /// Непроходимая наземная поверхность.
     /// </summary>
