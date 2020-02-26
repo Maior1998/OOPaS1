@@ -1,29 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using Strategy.Domain.Models;
 
 namespace Strategy.Domain
 {
     /// <summary>
-    /// Контроллер хода игры.
+    ///     Контроллер хода игры.
     /// </summary>
     public class GameController
     {
-
         private readonly Map _map;
 
-        private readonly ImageSource _archerSource = BuildSourceFromPath("Resources/Units/Archer.png");
-        private readonly ImageSource _catapultSource = BuildSourceFromPath("Resources/Units/Catapult.png");
-        private readonly ImageSource _horsemanSource = BuildSourceFromPath("Resources/Units/Horseman.png");
-        private readonly ImageSource _swordsmanSource = BuildSourceFromPath("Resources/Units/Swordsman.png");
-        private readonly ImageSource _deadUnitSource = BuildSourceFromPath("Resources/Units/Dead.png");
-        private readonly ImageSource _grassSource = BuildSourceFromPath("Resources/Ground/Grass.png");
-        private readonly ImageSource _waterSource = BuildSourceFromPath("Resources/Ground/Water.png");
-
         /// <summary>
-        /// Инициализирует новый объект контроллера игры.
+        ///     Инициализирует новый объект контроллера игры.
         /// </summary>
         /// <param name="map"></param>
         public GameController(Map map)
@@ -32,7 +21,7 @@ namespace Strategy.Domain
         }
 
         /// <summary>
-        /// Получить координаты объекта.
+        ///     Получить координаты объекта.
         /// </summary>
         /// <param name="TargetObject">Координаты объекта, которые необходимо получить.</param>
         /// <returns>Координата x, координата y.</returns>
@@ -44,47 +33,47 @@ namespace Strategy.Domain
         }
 
         /// <summary>
-        /// Может ли юнит передвинуться в указанную клетку.
+        ///     Может ли юнит передвинуться в указанную клетку.
         /// </summary>
         /// <param name="unit">Юнит.</param>
         /// <param name="x">Координата X клетки.</param>
         /// <param name="y">Координата Y клетки.</param>
         /// <returns>
-        /// <see langvalue="true" />, если юнит может переместиться
-        /// <see langvalue="false" /> - иначе.
+        ///     <see langvalue="true" />, если юнит может переместиться
+        ///     <see langvalue="false" /> - иначе.
         /// </returns>
         public bool CanMoveUnit(object unit, int x, int y)
         {
             Coordinates MoveTargetCoordinates = new Coordinates(x, y);
             if (unit is PlayableUnit PlayableUnit)
             {
-                if (!PlayableUnit.CanMoveTo(x, y)) return false;
+                if (!PlayableUnit.CanMoveTo(x, y))
+                    return false;
             }
             else
-                    throw new ArgumentException("Неизвестный тип");
+            {
+                throw new ArgumentException("Неизвестный тип");
+            }
 
             //проверка, не находится ли в указанной клетке вода.
             foreach (object CurObject in _map.Ground)
-            {
                 if (CurObject is Water FoundWater && FoundWater.UnitCoordinates == MoveTargetCoordinates)
                     return false;
-            }
 
             //проверка, не находится ли в указанной клетке еще один юнит.
             foreach (object CurUnit in _map.Units)
             {
-                if (!(CurUnit is PlayableUnit CurPlayableUnit)) 
+                if (!(CurUnit is PlayableUnit CurPlayableUnit))
                     throw new ArgumentException("Неизвестный тип");
                 if (CurPlayableUnit.UnitCoordinates == MoveTargetCoordinates)
                     return false;
-                
             }
 
             return true;
         }
 
         /// <summary>
-        /// Передвинуть юнита в указанную клетку.
+        ///     Передвинуть юнита в указанную клетку.
         /// </summary>
         /// <param name="unit">Юнит.</param>
         /// <param name="x">Координата X клетки.</param>
@@ -94,44 +83,31 @@ namespace Strategy.Domain
             //если не можем передвинуть юнита - выходим.
             if (!CanMoveUnit(unit, x, y))
                 return;
-
-            if (unit is PlayableUnit playableunit)
-                playableunit.MoveTo(x, y);
-            else
-                throw new ArgumentException("Неизвестный тип");
+            (unit as PlayableUnit).MoveTo(x, y);
         }
 
         /// <summary>
-        /// Проверить, может ли один юнит атаковать другого.
+        ///     Проверить, может ли один юнит атаковать другого.
         /// </summary>
         /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
         /// <param name="TargetUnit">Юнит, который является целью.</param>
         /// <returns>
-        /// <see langvalue="true" />, если атака возможна
-        /// <see langvalue="false" /> - иначе.
+        ///     <see langvalue="true" />, если атака возможна
+        ///     <see langvalue="false" /> - иначе.
         /// </returns>
         public bool CanAttackUnit(object AttackingUnit, object TargetUnit)
         {
-            Player TargetUnitPlayer;
-            PlayableUnit TargetPlayableUnit = TargetUnit as PlayableUnit;
-            if (!(TargetPlayableUnit is null))
-                TargetUnitPlayer = TargetPlayableUnit.Player;
-            else
+            //TODO: надо ли делать проверку на null?
+            //если хотя бы один из участников не я/я играбельным юнитом - исключение
+            if (!(TargetUnit is PlayableUnit TargetPlayableUnit) ||
+                !(AttackingUnit is PlayableUnit AttackingPlayableUnit))
                 throw new ArgumentException("Неизвестный тип");
-
-            //если юнит уже помер, то и атаковать его нет смысла
-            if (TargetPlayableUnit.IsDead)
-                return false;
-
-            if (!(AttackingUnit is PlayableUnit AttackingPlayableUnit))
-                throw new ArgumentException("Неизвестный тип");
-
-            return AttackingPlayableUnit.Player != TargetUnitPlayer &&
-                   AttackingPlayableUnit.CanAtack(TargetPlayableUnit);
+            //возвращаем да, если атакующий игрок не пытается ударить сам себя и если может атаковать цель
+            return AttackingPlayableUnit.CanAtack(TargetPlayableUnit);
         }
 
         /// <summary>
-        /// Атаковать указанного юнита.
+        ///     Атаковать указанного юнита.
         /// </summary>
         /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
         /// <param name="TargetUnit">Юнит, который является целью.</param>
@@ -147,35 +123,13 @@ namespace Strategy.Domain
         }
 
         /// <summary>
-        /// Получить изображение объекта.
+        ///     Получить изображение объекта.
         /// </summary>
         public ImageSource GetObjectSource(object target_object)
         {
-            switch (target_object)
-            {
-                case Archer Archer:
-                    return Archer.IsDead ? _deadUnitSource : _archerSource;
-                case Catapult Catapult:
-                    return Catapult.IsDead ? _deadUnitSource : _catapultSource;
-                case Horseman Horseman:
-                    return Horseman.IsDead ? _deadUnitSource : _horsemanSource;
-                case Swordsman Swordsman:
-                    return Swordsman.IsDead ? _deadUnitSource : _swordsmanSource;
-                case Grass _:
-                    return _grassSource;
-                case Water _:
-                    return _waterSource;
-                default:
-                    throw new ArgumentException("Неизвестный тип");
-            }
-        }
-
-        /// <summary>
-        /// Получить изображение по указанному пути.
-        /// </summary>
-        private static ImageSource BuildSourceFromPath(string path)
-        {
-            return new BitmapImage(new Uri(path, UriKind.Relative));
+            if (target_object is GameUnit target_gameunit)
+                return target_gameunit.UnitImageSource;
+            throw new ArgumentException("Неизвестный тип");
         }
     }
 }

@@ -3,12 +3,12 @@
 namespace Strategy.Domain.Models
 {
     /// <summary>
-    /// Игрок.
+    ///     Игрок.
     /// </summary>
     public sealed class Player
     {
         /// <summary>
-        /// Инициализирует новый объект игрока с заданным номером, именем и фоткой (портретом).
+        ///     Инициализирует новый объект игрока с заданным номером, именем и фоткой (портретом).
         /// </summary>
         /// <param name="id">Номер создаваемого игрока.</param>
         /// <param name="name">Имя создаваемого игрока.</param>
@@ -22,17 +22,17 @@ namespace Strategy.Domain.Models
 
 
         /// <summary>
-        /// Идентификатор игрока.
+        ///     Идентификатор игрока.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Имя игрока.
+        ///     Имя игрока.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Портрет игрока.
+        ///     Портрет игрока.
         /// </summary>
         public ImageSource Portrait { get; set; }
     }

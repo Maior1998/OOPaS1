@@ -3,12 +3,12 @@
 namespace Strategy.Domain.Models
 {
     /// <summary>
-    /// Карта.
+    ///     Карта.
     /// </summary>
     public sealed class Map
     {
         /// <summary>
-        /// Инициализирует новый объект карты по заданной поверхности и набору юнитов.
+        ///     Инициализирует новый объект карты по заданной поверхности и набору юнитов.
         /// </summary>
         /// <param name="ground">ПОверхность карты.</param>
         /// <param name="units">Юниты, расположенные на карте.</param>
@@ -20,12 +20,12 @@ namespace Strategy.Domain.Models
 
 
         /// <summary>
-        /// Поверхность под ногами.
+        ///     Поверхность под ногами.
         /// </summary>
         public IReadOnlyList<object> Ground { get; }
 
         /// <summary>
-        /// Список юнитов.
+        ///     Список юнитов.
         /// </summary>
         public IReadOnlyList<object> Units { get; }
     }

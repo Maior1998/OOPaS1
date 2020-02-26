@@ -3,26 +3,26 @@
 namespace Strategy.Domain.Models
 {
     /// <summary>
-    /// Координаты на карте.
+    ///     Координаты на карте.
     /// </summary>
     public sealed class Coordinates
     {
-        /// <summary>
-        /// Координата X.
-        /// </summary>
-        public int X { get; set; }
-
-        /// <summary>
-        /// Координата Y.
-        /// </summary>
-        public int Y { get; set; }
-
         /// <inheritdoc />
         public Coordinates(int x, int y)
         {
             X = x;
             Y = y;
         }
+
+        /// <summary>
+        ///     Координата X.
+        /// </summary>
+        public int X { get; set; }
+
+        /// <summary>
+        ///     Координата Y.
+        /// </summary>
+        public int Y { get; set; }
 
         /// <inheritdoc />
         public override bool Equals(object obj)
@@ -42,7 +42,7 @@ namespace Strategy.Domain.Models
         }
 
         /// <summary>
-        /// Проверить на равенство с другим объектом.
+        ///     Проверить на равенство с другим объектом.
         /// </summary>
         private bool Equals(Coordinates other)
         {
@@ -61,18 +61,18 @@ namespace Strategy.Domain.Models
         }
 
         /// <summary>
-        /// Расчет расстояния между двумя заданными координатами.
+        ///     Расчет расстояния между двумя заданными координатами.
         /// </summary>
         /// <param name="First">Первая точка-координата.</param>
         /// <param name="Second">Вторая точка-координата.</param>
         /// <returns>Координата - дистанция между заданными.</returns>
         public static Coordinates DistanceTo(Coordinates First, Coordinates Second)
         {
-            return new Coordinates(Math.Abs(First.X-Second.X), Math.Abs(First.Y - Second.Y));
+            return new Coordinates(Math.Abs(First.X - Second.X), Math.Abs(First.Y - Second.Y));
         }
 
         /// <summary>
-        /// Расчет расстояния между текущей координатой и заданной.
+        ///     Расчет расстояния между текущей координатой и заданной.
         /// </summary>
         /// <param name="Other">Координата, до которой необходимо рассчитать расстояние.</param>
         /// <returns>Координата - дистанция между заданными.</returns>
@@ -80,6 +80,5 @@ namespace Strategy.Domain.Models
         {
             return DistanceTo(this, Other);
         }
-
     }
 }
