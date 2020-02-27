@@ -75,31 +75,7 @@ namespace Strategy.Domain.Models
                    Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X) <= MaxAttackRange &&
                    Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y) <= MaxAttackRange;
         }
-
-        /// <summary>
-        ///     Определяет, может ли текущий юнит переместиться в клетку с указанными координатами.
-        /// </summary>
-        /// <param name="x">Координата x проверяемой клетки поля.</param>
-        /// <param name="y">Координата y проверяемой клетки поля.</param>
-        /// <returns></returns>
-        public bool CanMoveTo(int x, int y)
-        {
-            return CanMoveTo(this, x, y);
-        }
-
-        /// <summary>
-        ///     Определяет, может ли указанный юнит переместиться в клетку с указанными координатами.
-        /// </summary>
-        /// <param name="unit">Юнит, для которого необходимо проверить возможность перемещения.</param>
-        /// <param name="x">Координата x проверяемой клетки поля.</param>
-        /// <param name="y">Координата y проверяемой клетки поля.</param>
-        /// <returns></returns>
-        public static bool CanMoveTo(PlayableUnit unit, int x, int y)
-        {
-            return Math.Abs(unit.UnitCoordinates.X - x) <= unit.MaxMoveRange &&
-                   Math.Abs(unit.UnitCoordinates.Y - y) <= unit.MaxMoveRange;
-        }
-
+        
         /// <summary>
         ///     Попытка передвинуть текущий юнит на заданную клекту.
         /// </summary>
@@ -118,7 +94,6 @@ namespace Strategy.Domain.Models
         /// <param name="y">Координата y клетки перемещения.</param>
         public static void MoveTo(PlayableUnit Target, int x, int y)
         {
-            if (!Target.CanMoveTo(x, y)) return;
             Target.UnitCoordinates.X = x;
             Target.UnitCoordinates.Y = y;
         }

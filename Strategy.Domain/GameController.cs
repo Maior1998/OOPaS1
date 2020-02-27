@@ -47,7 +47,8 @@ namespace Strategy.Domain
             Coordinates MoveTargetCoordinates = new Coordinates(x, y);
             if (unit is PlayableUnit PlayableUnit)
             {
-                if (!PlayableUnit.CanMoveTo(x, y))
+                if (Math.Abs(PlayableUnit.UnitCoordinates.X - x) > PlayableUnit.MaxMoveRange ||
+                    Math.Abs(PlayableUnit.UnitCoordinates.Y - y) > PlayableUnit.MaxMoveRange)
                     return false;
             }
             else
@@ -57,7 +58,7 @@ namespace Strategy.Domain
 
             //проверка, не находится ли в указанной клетке вода.
             foreach (object CurObject in _map.Ground)
-                if (CurObject is Water FoundWater && FoundWater.UnitCoordinates == MoveTargetCoordinates)
+                if (CurObject is Water FoundedWater && FoundedWater.UnitCoordinates == MoveTargetCoordinates)
                     return false;
 
             //проверка, не находится ли в указанной клетке еще один юнит.
@@ -97,7 +98,6 @@ namespace Strategy.Domain
         /// </returns>
         public bool CanAttackUnit(object AttackingUnit, object TargetUnit)
         {
-            //TODO: надо ли делать проверку на null?
             //если хотя бы один из участников не я/я играбельным юнитом - исключение
             if (!(TargetUnit is PlayableUnit TargetPlayableUnit) ||
                 !(AttackingUnit is PlayableUnit AttackingPlayableUnit))

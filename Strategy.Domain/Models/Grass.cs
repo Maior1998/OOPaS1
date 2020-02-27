@@ -20,6 +20,7 @@ namespace Strategy.Domain.Models
         /// </summary>
         public Grass()
         {
+            UnitCoordinates=new Coordinates(0,0);
         }
 
         /// <summary>

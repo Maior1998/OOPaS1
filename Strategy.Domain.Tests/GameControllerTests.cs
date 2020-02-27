@@ -486,7 +486,6 @@ namespace Strategy.Domain.Tests
             Assert.True(gameController.CanMoveUnit(swordsman, grassPositionX, grassPositionY));
         }
 
-        //TODO: да епт, это трава или вода, че происходит вообще
         /// <summary>
         ///     Проверить, что юнит может переместиться на клетку с травой.
         /// </summary>
