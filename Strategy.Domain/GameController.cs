@@ -9,15 +9,15 @@ namespace Strategy.Domain
     /// </summary>
     public class GameController
     {
-        private readonly Map _map;
+        private readonly Map CurrentMap;
 
         /// <summary>
         ///     Инициализирует новый объект контроллера игры.
         /// </summary>
-        /// <param name="map"></param>
-        public GameController(Map map)
+        /// <param name="CurrentMap"></param>
+        public GameController(Map CurrentMap)
         {
-            _map = map;
+            this.CurrentMap = CurrentMap;
         }
 
         /// <summary>
@@ -27,28 +27,28 @@ namespace Strategy.Domain
         /// <returns>Координата x, координата y.</returns>
         public Coordinates GetObjectCoordinates(object TargetObject)
         {
-            if (TargetObject is GameUnit unit)
-                return unit.UnitCoordinates;
+            if (TargetObject is GameUnit Unit)
+                return Unit.UnitCoordinates;
             throw new ArgumentException("Неизвестный тип");
         }
 
         /// <summary>
         ///     Может ли юнит передвинуться в указанную клетку.
         /// </summary>
-        /// <param name="unit">Юнит.</param>
-        /// <param name="x">Координата X клетки.</param>
-        /// <param name="y">Координата Y клетки.</param>
+        /// <param name="Unit">Юнит.</param>
+        /// <param name="X">Координата X клетки.</param>
+        /// <param name="Y">Координата Y клетки.</param>
         /// <returns>
         ///     <see langvalue="true" />, если юнит может переместиться
         ///     <see langvalue="false" /> - иначе.
         /// </returns>
-        public bool CanMoveUnit(object unit, int x, int y)
+        public bool CanMoveUnit(object Unit, int X, int Y)
         {
-            Coordinates MoveTargetCoordinates = new Coordinates(x, y);
-            if (unit is PlayableUnit PlayableUnit)
+            Coordinates MoveTargetCoordinates = new Coordinates(X, Y);
+            if (Unit is PlayableUnit PlayableUnit)
             {
-                if (Math.Abs(PlayableUnit.UnitCoordinates.X - x) > PlayableUnit.MaxMoveRange ||
-                    Math.Abs(PlayableUnit.UnitCoordinates.Y - y) > PlayableUnit.MaxMoveRange)
+                if (Math.Abs(PlayableUnit.UnitCoordinates.X - X) > PlayableUnit.MaxMoveRange ||
+                    Math.Abs(PlayableUnit.UnitCoordinates.Y - Y) > PlayableUnit.MaxMoveRange)
                     return false;
             }
             else
@@ -57,12 +57,12 @@ namespace Strategy.Domain
             }
 
             //проверка, не находится ли в указанной клетке вода.
-            foreach (object CurObject in _map.Ground)
+            foreach (object CurObject in CurrentMap.Ground)
                 if (CurObject is Water FoundedWater && FoundedWater.UnitCoordinates == MoveTargetCoordinates)
                     return false;
 
             //проверка, не находится ли в указанной клетке еще один юнит.
-            foreach (object CurUnit in _map.Units)
+            foreach (object CurUnit in CurrentMap.Units)
             {
                 if (!(CurUnit is PlayableUnit CurPlayableUnit))
                     throw new ArgumentException("Неизвестный тип");
@@ -76,15 +76,15 @@ namespace Strategy.Domain
         /// <summary>
         ///     Передвинуть юнита в указанную клетку.
         /// </summary>
-        /// <param name="unit">Юнит.</param>
-        /// <param name="x">Координата X клетки.</param>
-        /// <param name="y">Координата Y клетки.</param>
-        public void MoveUnit(object unit, int x, int y)
+        /// <param name="Unit">Юнит.</param>
+        /// <param name="X">Координата X клетки.</param>
+        /// <param name="Y">Координата Y клетки.</param>
+        public void MoveUnit(object Unit, int X, int Y)
         {
             //если не можем передвинуть юнита - выходим.
-            if (!CanMoveUnit(unit, x, y))
+            if (!CanMoveUnit(Unit, X, Y))
                 return;
-            (unit as PlayableUnit).MoveTo(x, y);
+            (Unit as PlayableUnit).MoveTo(X, Y);
         }
 
         /// <summary>
@@ -125,10 +125,10 @@ namespace Strategy.Domain
         /// <summary>
         ///     Получить изображение объекта.
         /// </summary>
-        public ImageSource GetObjectSource(object target_object)
+        public ImageSource GetObjectSource(object TargetObject)
         {
-            if (target_object is GameUnit target_gameunit)
-                return target_gameunit.UnitImageSource;
+            if (TargetObject is GameUnit TargetGameunit)
+                return TargetGameunit.UnitImageSource;
             throw new ArgumentException("Неизвестный тип");
         }
     }

@@ -12,40 +12,40 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Изображение живого лучника.
         /// </summary>
-        private static readonly ImageSource image =
+        private static readonly ImageSource Image =
             new BitmapImage(new Uri("Resources/Units/Archer.png", UriKind.Relative));
 
         /// <summary>
         ///     Инициализирует нового лучника, управляемого заданным игроком.
         /// </summary>
-        /// <param name="player">Игрок, к которому привязан лучник.</param>
-        public Archer(Player player) : base(player)
+        /// <param name="Player">Игрок, к которому привязан лучник.</param>
+        public Archer(Player Player) : base(Player)
         {
             MaxMoveRange = 3;
             MaxAttackRange = 5;
-            HP = 50;
+            Hp = 50;
             Damage = 50;
         }
 
         /// <summary>
         ///     Инициализирует нового лучника, управляемого заданным игроком и расположенным на заданных координатах.
         /// </summary>
-        /// <param name="player">Игрок, к которому привязан лучник.</param>
-        /// <param name="x">Координата X позиции лучника.</param>
-        /// <param name="y">Координата Y позиции лучника.</param>
-        public Archer(Player player, int x, int y) : this(player)
+        /// <param name="Player">Игрок, к которому привязан лучник.</param>
+        /// <param name="X">Координата X позиции лучника.</param>
+        /// <param name="Y">Координата Y позиции лучника.</param>
+        public Archer(Player Player, int X, int Y) : this(Player)
         {
-            UnitCoordinates = new Coordinates(x, y);
+            UnitCoordinates = new Coordinates(X, Y);
         }
 
-        public override ImageSource UnitImageSource => IsDead ? _deadUnitSource : image;
+        public override ImageSource UnitImageSource => IsDead ? DeadUnitSource : Image;
 
         public override void Attack(PlayableUnit Other)
         {
             if (!CanAtack(Other)) return;
-            int dx = Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X);
-            int dy = Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y);
-            Other.HP = Math.Max(0, Other.HP - (dx <= 1 && dy <= 1 ? Damage / 2 : Damage));
+            int Dx = Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X);
+            int Dy = Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y);
+            Other.Hp = Math.Max(0, Other.Hp - (Dx <= 1 && Dy <= 1 ? Damage / 2 : Damage));
         }
     }
 }

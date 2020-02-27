@@ -12,7 +12,7 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Изображение поверхности.
         /// </summary>
-        private static readonly ImageSource image =
+        private static readonly ImageSource Image =
             new BitmapImage(new Uri("Resources/Units/Grass.png", UriKind.Relative));
 
         /// <summary>
@@ -26,13 +26,13 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Создает новый объект травы по указанным координатам.
         /// </summary>
-        /// <param name="x">Координата X травы.</param>
-        /// <param name="y">Координата Y травы.</param>
-        public Grass(int x, int y)
+        /// <param name="X">Координата X травы.</param>
+        /// <param name="Y">Координата Y травы.</param>
+        public Grass(int X, int Y)
         {
-            UnitCoordinates = new Coordinates(x, y);
+            UnitCoordinates = new Coordinates(X, Y);
         }
 
-        public override ImageSource UnitImageSource => image;
+        public override ImageSource UnitImageSource => Image;
     }
 }

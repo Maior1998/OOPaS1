@@ -12,39 +12,39 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Изображение живого мечника.
         /// </summary>
-        private static readonly ImageSource image =
+        private static readonly ImageSource Image =
             new BitmapImage(new Uri("Resources/Units/Swordsman.png", UriKind.Relative));
 
         /// <summary>
         ///     Инициализирует новый объект мечника, управляемый заданным игроком.
         /// </summary>
-        /// <param name="player">Игрок, управляющий мечником.</param>
-        public Swordsman(Player player) : base(player)
+        /// <param name="Player">Игрок, управляющий мечником.</param>
+        public Swordsman(Player Player) : base(Player)
         {
             MaxMoveRange = 5;
             MaxAttackRange = 1;
-            HP = 100;
+            Hp = 100;
             Damage = 50;
         }
 
         /// <summary>
         ///     Инициализирует нового мечника, управляемого заданным игроком и расположенного на заданных координатах.
         /// </summary>
-        /// <param name="player">Игрок, к которому привязан мечник.</param>
-        /// <param name="x">Координата X позиции мечника.</param>
-        /// <param name="y">Координата Y позиции мечника.</param>
-        public Swordsman(Player player, int x, int y) : this(player)
+        /// <param name="Player">Игрок, к которому привязан мечник.</param>
+        /// <param name="X">Координата X позиции мечника.</param>
+        /// <param name="Y">Координата Y позиции мечника.</param>
+        public Swordsman(Player Player, int X, int Y) : this(Player)
         {
-            UnitCoordinates = new Coordinates(x, y);
+            UnitCoordinates = new Coordinates(X, Y);
         }
 
-        public override ImageSource UnitImageSource => IsDead ? _deadUnitSource : image;
+        public override ImageSource UnitImageSource => IsDead ? DeadUnitSource : Image;
 
 
         public override void Attack(PlayableUnit Other)
         {
             if (!CanAtack(Other)) return;
-            Other.HP = Math.Max(0, Other.HP - Damage);
+            Other.Hp = Math.Max(0, Other.Hp - Damage);
         }
     }
 }

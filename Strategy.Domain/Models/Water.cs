@@ -14,7 +14,7 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Изображение воды.
         /// </summary>
-        private static readonly ImageSource image =
+        private static readonly ImageSource Image =
             new BitmapImage(new Uri("Resources/Units/Water.png", UriKind.Relative));
 
         /// <summary>
@@ -27,13 +27,13 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Создает новый объект воды по указанным координатам.
         /// </summary>
-        /// <param name="x">Координата X воды.</param>
-        /// <param name="y">Координата Y воды.</param>
-        public Water(int x, int y)
+        /// <param name="X">Координата X воды.</param>
+        /// <param name="Y">Координата Y воды.</param>
+        public Water(int X, int Y)
         {
-            UnitCoordinates = new Coordinates(x, y);
+            UnitCoordinates = new Coordinates(X, Y);
         }
 
-        public override ImageSource UnitImageSource => image;
+        public override ImageSource UnitImageSource => Image;
     }
 }

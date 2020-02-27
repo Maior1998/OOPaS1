@@ -12,16 +12,16 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Изображение мертвого юнита. Применимо только для играбельных юнитов.
         /// </summary>
-        protected readonly ImageSource _deadUnitSource =
+        protected readonly ImageSource DeadUnitSource =
             new BitmapImage(new Uri("Resources/Units/Dead.png", UriKind.Relative));
 
         /// <summary>
         ///     Инициализирует новый игровой юнит.
         /// </summary>
-        /// <param name="player">Игрок, управляющий юнитом.</param>
-        protected PlayableUnit(Player player)
+        /// <param name="Player">Игрок, управляющий юнитом.</param>
+        protected PlayableUnit(Player Player)
         {
-            Player = player;
+            this.Player = Player;
         }
 
         /// <summary>
@@ -47,12 +47,12 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Очки здоровья юнита.
         /// </summary>
-        public int HP { get; set; }
+        public int Hp { get; set; }
 
         /// <summary>
         ///     Определяет, не умер ли юнит.
         /// </summary>
-        public bool IsDead => HP == 0;
+        public bool IsDead => Hp == 0;
 
         /// <summary>
         ///     Попытаться атаковать другой играбельный юнит.
@@ -79,23 +79,23 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Попытка передвинуть текущий юнит на заданную клекту.
         /// </summary>
-        /// <param name="x">Координата x клетки перемещения.</param>
-        /// <param name="y">Координата y клетки перемещения.</param>
-        public void MoveTo(int x, int y)
+        /// <param name="X">Координата x клетки перемещения.</param>
+        /// <param name="Y">Координата y клетки перемещения.</param>
+        public void MoveTo(int X, int Y)
         {
-            MoveTo(this, x, y);
+            MoveTo(this, X, Y);
         }
 
         /// <summary>
         ///     Попытка передвинуть указанный юнит на заданную клекту.
         /// </summary>
         /// <param name="Target">Передвигаемый юнит.</param>
-        /// <param name="x">Координата x клетки перемещения.</param>
-        /// <param name="y">Координата y клетки перемещения.</param>
-        public static void MoveTo(PlayableUnit Target, int x, int y)
+        /// <param name="X">Координата x клетки перемещения.</param>
+        /// <param name="Y">Координата y клетки перемещения.</param>
+        public static void MoveTo(PlayableUnit Target, int X, int Y)
         {
-            Target.UnitCoordinates.X = x;
-            Target.UnitCoordinates.Y = y;
+            Target.UnitCoordinates.X = X;
+            Target.UnitCoordinates.Y = Y;
         }
     }
 }

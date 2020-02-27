@@ -8,10 +8,10 @@ namespace Strategy.Domain.Models
     public sealed class Coordinates
     {
         /// <inheritdoc />
-        public Coordinates(int x, int y)
+        public Coordinates(int X, int Y)
         {
-            X = x;
-            Y = y;
+            this.X = X;
+            this.Y = Y;
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace Strategy.Domain.Models
         public int Y { get; set; }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object Obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj is Coordinates other && Equals(other);
+            if (ReferenceEquals(null, Obj)) return false;
+            if (ReferenceEquals(this, Obj)) return true;
+            return Obj is Coordinates Other && Equals(Other);
         }
 
         /// <inheritdoc />
@@ -44,9 +44,9 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Проверить на равенство с другим объектом.
         /// </summary>
-        private bool Equals(Coordinates other)
+        private bool Equals(Coordinates Other)
         {
-            return X == other.X && Y == other.Y;
+            return X == Other.X && Y == Other.Y;
         }
 
         public static bool operator ==(Coordinates First, Coordinates Second)
