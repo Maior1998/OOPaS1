@@ -18,10 +18,10 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новый игровой юнит.
         /// </summary>
-        /// <param name="Player">Игрок, управляющий юнитом.</param>
-        protected PlayableUnit(Player Player)
+        /// <param name="player">Игрок, управляющий юнитом.</param>
+        protected PlayableUnit(Player player)
         {
-            this.Player = Player;
+            this.Player = player;
         }
 
         /// <summary>
@@ -57,45 +57,45 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Попытаться атаковать другой играбельный юнит.
         /// </summary>
-        /// <param name="Other"></param>
-        public abstract void Attack(PlayableUnit Other);
+        /// <param name="other"></param>
+        public abstract void Attack(PlayableUnit other);
 
         /// <summary>
         ///     Определяет, может ли текущий юнит атаковать указанный юнит.
         /// </summary>
-        /// <param name="Other"></param>
+        /// <param name="other"></param>
         /// <returns></returns>
-        public bool CanAtack(PlayableUnit Other)
+        public bool CanAtack(PlayableUnit other)
         {
             //Если атакуемый юнит жив
-            return !Other.IsDead &&
+            return !other.IsDead &&
                    //игрок не пытается атаковать сам себя
-                   Player != Other.Player &&
+                   Player != other.Player &&
                    //и координаты входят в радиус атаки - везвраащем true, иначе - false
-                   Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X) <= MaxAttackRange &&
-                   Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y) <= MaxAttackRange;
+                   Math.Abs(UnitCoordinates.X - other.UnitCoordinates.X) <= MaxAttackRange &&
+                   Math.Abs(UnitCoordinates.Y - other.UnitCoordinates.Y) <= MaxAttackRange;
         }
         
         /// <summary>
         ///     Попытка передвинуть текущий юнит на заданную клекту.
         /// </summary>
-        /// <param name="X">Координата x клетки перемещения.</param>
-        /// <param name="Y">Координата y клетки перемещения.</param>
-        public void MoveTo(int X, int Y)
+        /// <param name="x">Координата x клетки перемещения.</param>
+        /// <param name="y">Координата y клетки перемещения.</param>
+        public void MoveTo(int x, int y)
         {
-            MoveTo(this, X, Y);
+            MoveTo(this, x, y);
         }
 
         /// <summary>
         ///     Попытка передвинуть указанный юнит на заданную клекту.
         /// </summary>
-        /// <param name="Target">Передвигаемый юнит.</param>
-        /// <param name="X">Координата x клетки перемещения.</param>
-        /// <param name="Y">Координата y клетки перемещения.</param>
-        public static void MoveTo(PlayableUnit Target, int X, int Y)
+        /// <param name="target">Передвигаемый юнит.</param>
+        /// <param name="x">Координата x клетки перемещения.</param>
+        /// <param name="y">Координата y клетки перемещения.</param>
+        public static void MoveTo(PlayableUnit target, int x, int y)
         {
-            Target.UnitCoordinates.X = X;
-            Target.UnitCoordinates.Y = Y;
+            target.UnitCoordinates.X = x;
+            target.UnitCoordinates.Y = y;
         }
     }
 }

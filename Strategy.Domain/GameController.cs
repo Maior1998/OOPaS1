@@ -9,25 +9,25 @@ namespace Strategy.Domain
     /// </summary>
     public class GameController
     {
-        private readonly Map CurrentMap;
+        private readonly Map currentMap;
 
         /// <summary>
         ///     Инициализирует новый объект контроллера игры.
         /// </summary>
-        /// <param name="CurrentMap"></param>
-        public GameController(Map CurrentMap)
+        /// <param name="currentMap"></param>
+        public GameController(Map currentMap)
         {
-            this.CurrentMap = CurrentMap;
+            this.currentMap = currentMap;
         }
 
         /// <summary>
         ///     Получить координаты объекта.
         /// </summary>
-        /// <param name="TargetObject">Координаты объекта, которые необходимо получить.</param>
+        /// <param name="targetObject">Координаты объекта, которые необходимо получить.</param>
         /// <returns>Координата x, координата y.</returns>
-        public Coordinates GetObjectCoordinates(object TargetObject)
+        public Coordinates GetObjectCoordinates(object targetObject)
         {
-            if (TargetObject is GameUnit Unit)
+            if (targetObject is GameUnit Unit)
                 return Unit.UnitCoordinates;
             throw new ArgumentException("Неизвестный тип");
         }
@@ -35,20 +35,20 @@ namespace Strategy.Domain
         /// <summary>
         ///     Может ли юнит передвинуться в указанную клетку.
         /// </summary>
-        /// <param name="Unit">Юнит.</param>
-        /// <param name="X">Координата X клетки.</param>
-        /// <param name="Y">Координата Y клетки.</param>
+        /// <param name="unit">Юнит.</param>
+        /// <param name="x">Координата X клетки.</param>
+        /// <param name="y">Координата Y клетки.</param>
         /// <returns>
         ///     <see langvalue="true" />, если юнит может переместиться
         ///     <see langvalue="false" /> - иначе.
         /// </returns>
-        public bool CanMoveUnit(object Unit, int X, int Y)
+        public bool CanMoveUnit(object unit, int x, int y)
         {
-            Coordinates MoveTargetCoordinates = new Coordinates(X, Y);
-            if (Unit is PlayableUnit PlayableUnit)
+            Coordinates MoveTargetCoordinates = new Coordinates(x, y);
+            if (unit is PlayableUnit PlayableUnit)
             {
-                if (Math.Abs(PlayableUnit.UnitCoordinates.X - X) > PlayableUnit.MaxMoveRange ||
-                    Math.Abs(PlayableUnit.UnitCoordinates.Y - Y) > PlayableUnit.MaxMoveRange)
+                if (Math.Abs(PlayableUnit.UnitCoordinates.X - x) > PlayableUnit.MaxMoveRange ||
+                    Math.Abs(PlayableUnit.UnitCoordinates.Y - y) > PlayableUnit.MaxMoveRange)
                     return false;
             }
             else
@@ -57,12 +57,12 @@ namespace Strategy.Domain
             }
 
             //проверка, не находится ли в указанной клетке вода.
-            foreach (object CurObject in CurrentMap.Ground)
+            foreach (object CurObject in currentMap.Ground)
                 if (CurObject is Water FoundedWater && FoundedWater.UnitCoordinates == MoveTargetCoordinates)
                     return false;
 
             //проверка, не находится ли в указанной клетке еще один юнит.
-            foreach (object CurUnit in CurrentMap.Units)
+            foreach (object CurUnit in currentMap.Units)
             {
                 if (!(CurUnit is PlayableUnit CurPlayableUnit))
                     throw new ArgumentException("Неизвестный тип");
@@ -76,31 +76,31 @@ namespace Strategy.Domain
         /// <summary>
         ///     Передвинуть юнита в указанную клетку.
         /// </summary>
-        /// <param name="Unit">Юнит.</param>
-        /// <param name="X">Координата X клетки.</param>
-        /// <param name="Y">Координата Y клетки.</param>
-        public void MoveUnit(object Unit, int X, int Y)
+        /// <param name="unit">Юнит.</param>
+        /// <param name="x">Координата X клетки.</param>
+        /// <param name="y">Координата Y клетки.</param>
+        public void MoveUnit(object unit, int x, int y)
         {
             //если не можем передвинуть юнита - выходим.
-            if (!CanMoveUnit(Unit, X, Y))
+            if (!CanMoveUnit(unit, x, y))
                 return;
-            (Unit as PlayableUnit).MoveTo(X, Y);
+            (unit as PlayableUnit).MoveTo(x, y);
         }
 
         /// <summary>
         ///     Проверить, может ли один юнит атаковать другого.
         /// </summary>
-        /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
-        /// <param name="TargetUnit">Юнит, который является целью.</param>
+        /// <param name="attackingUnit">Юнит, который собирается совершить атаку.</param>
+        /// <param name="targetUnit">Юнит, который является целью.</param>
         /// <returns>
         ///     <see langvalue="true" />, если атака возможна
         ///     <see langvalue="false" /> - иначе.
         /// </returns>
-        public bool CanAttackUnit(object AttackingUnit, object TargetUnit)
+        public bool CanAttackUnit(object attackingUnit, object targetUnit)
         {
             //если хотя бы один из участников не я/я играбельным юнитом - исключение
-            if (!(TargetUnit is PlayableUnit TargetPlayableUnit) ||
-                !(AttackingUnit is PlayableUnit AttackingPlayableUnit))
+            if (!(targetUnit is PlayableUnit TargetPlayableUnit) ||
+                !(attackingUnit is PlayableUnit AttackingPlayableUnit))
                 throw new ArgumentException("Неизвестный тип");
             //возвращаем да, если атакующий игрок не пытается ударить сам себя и если может атаковать цель
             return AttackingPlayableUnit.CanAtack(TargetPlayableUnit);
@@ -109,15 +109,15 @@ namespace Strategy.Domain
         /// <summary>
         ///     Атаковать указанного юнита.
         /// </summary>
-        /// <param name="AttackingUnit">Юнит, который собирается совершить атаку.</param>
-        /// <param name="TargetUnit">Юнит, который является целью.</param>
-        public void AttackUnit(object AttackingUnit, object TargetUnit)
+        /// <param name="attackingUnit">Юнит, который собирается совершить атаку.</param>
+        /// <param name="targetUnit">Юнит, который является целью.</param>
+        public void AttackUnit(object attackingUnit, object targetUnit)
         {
-            if (!CanAttackUnit(AttackingUnit, TargetUnit))
+            if (!CanAttackUnit(attackingUnit, targetUnit))
                 return;
 
-            if (!(AttackingUnit is PlayableUnit AttackingPlayableUnit) ||
-                !(TargetUnit is PlayableUnit TargetPlayableUnit))
+            if (!(attackingUnit is PlayableUnit AttackingPlayableUnit) ||
+                !(targetUnit is PlayableUnit TargetPlayableUnit))
                 throw new ArgumentException("Неизвестный тип");
             AttackingPlayableUnit.Attack(TargetPlayableUnit);
         }
@@ -125,9 +125,9 @@ namespace Strategy.Domain
         /// <summary>
         ///     Получить изображение объекта.
         /// </summary>
-        public ImageSource GetObjectSource(object TargetObject)
+        public ImageSource GetObjectSource(object targetObject)
         {
-            if (TargetObject is GameUnit TargetGameunit)
+            if (targetObject is GameUnit TargetGameunit)
                 return TargetGameunit.UnitImageSource;
             throw new ArgumentException("Неизвестный тип");
         }

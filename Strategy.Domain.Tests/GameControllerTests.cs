@@ -13,20 +13,20 @@ namespace Strategy.Domain.Tests
         /// <summary>
         ///     Рассчитать количество ударов, которое необходимо, чтобы убить юнита.
         /// </summary>
-        /// <param name="GameController">Контроллер игры.</param>
-        /// <param name="AttackerUnit">Юнит, который наносит удар.</param>
-        /// <param name="TargetUnit">Юнит, который является целью.</param>
+        /// <param name="gameController">Контроллер игры.</param>
+        /// <param name="attackerUnit">Юнит, который наносит удар.</param>
+        /// <param name="targetUnit">Юнит, который является целью.</param>
         /// <returns>Количество ударов, которое было нанесено юниту.</returns>
         /// <remarks>
         ///     Проверка не точная. Считается какое количество ударов нужно, чтобы убить противника.
         ///     Смерть считается по тому, что больше нельзя атаковать. В общем случае, такая проверка работоспособна.
         /// </remarks>
-        private static int GetAttacksCount(GameController GameController, object AttackerUnit, object TargetUnit)
+        private static int GetAttacksCount(GameController gameController, object attackerUnit, object targetUnit)
         {
             int Count = 0;
-            while (GameController.CanAttackUnit(AttackerUnit, TargetUnit))
+            while (gameController.CanAttackUnit(attackerUnit, targetUnit))
             {
-                GameController.AttackUnit(AttackerUnit, TargetUnit);
+                gameController.AttackUnit(attackerUnit, targetUnit);
                 Count++;
             }
 
@@ -36,11 +36,11 @@ namespace Strategy.Domain.Tests
         /// <summary>
         ///     Создать карту.
         /// </summary>
-        /// <param name="Ground">Информация о местности.</param>
-        /// <param name="Units">Список юнитов.</param>
-        private static Map CreateMap(IReadOnlyList<object> Ground = null, IReadOnlyList<object> Units = null)
+        /// <param name="ground">Информация о местности.</param>
+        /// <param name="units">Список юнитов.</param>
+        private static Map CreateMap(IReadOnlyList<object> ground = null, IReadOnlyList<object> units = null)
         {
-            return new Map(Ground ?? new object[0], Units ?? new object[0]);
+            return new Map(ground ?? new object[0], units ?? new object[0]);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Strategy.Domain.Tests
         [TestCase(15, 15, true)]
         [TestCase(9, 10, true)]
         [TestCase(12, 7, true)]
-        public void CanAttackUnit_Archer(int X, int Y, bool CanAttack)
+        public void CanAttackUnit_Archer(int x, int y, bool canAttack)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
@@ -243,11 +243,11 @@ namespace Strategy.Domain.Tests
             Player Player1 = new Player(1, "Игрок №1", null);
             Player Player2 = new Player(2, "Игрок №2", null);
             Archer Archer = new Archer(Player1, startPositionX, startPositionY);
-            Archer Target = new Archer(Player2, X, Y);
-            Map Map = CreateMap(Units: new object[] {Archer, Target});
+            Archer Target = new Archer(Player2, x, y);
+            Map Map = CreateMap(units: new object[] {Archer, Target});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanAttack, GameController.CanAttackUnit(Archer, Target));
+            Assert.AreEqual(canAttack, GameController.CanAttackUnit(Archer, Target));
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace Strategy.Domain.Tests
             Player Player = new Player(1, "Игрок №1", null);
             Archer Archer = new Archer(Player, 10, 10);
             Archer Target = new Archer(Player, 11, 11);
-            Map Map = CreateMap(Units: new[] {Archer, Target});
+            Map Map = CreateMap(units: new[] {Archer, Target});
             GameController GameController = new GameController(Map);
 
             Assert.False(GameController.CanAttackUnit(Archer, Target));
@@ -277,7 +277,7 @@ namespace Strategy.Domain.Tests
         [TestCase(30, 30, true)]
         [TestCase(11, 15, true)]
         [TestCase(25, 12, true)]
-        public void CanAttackUnit_Catapult(int X, int Y, bool CanAttack)
+        public void CanAttackUnit_Catapult(int x, int y, bool canAttack)
         {
             const int startPositionX = 20;
             const int startPositionY = 20;
@@ -285,11 +285,11 @@ namespace Strategy.Domain.Tests
             Player Player1 = new Player(1, "Игрок №1", null);
             Player Player2 = new Player(2, "Игрок №2", null);
             Catapult Catapult = new Catapult(Player1, startPositionX, startPositionY);
-            Archer Target = new Archer(Player2, X, Y);
-            Map Map = CreateMap(Units: new object[] {Catapult, Target});
+            Archer Target = new Archer(Player2, x, y);
+            Map Map = CreateMap(units: new object[] {Catapult, Target});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanAttack, GameController.CanAttackUnit(Catapult, Target));
+            Assert.AreEqual(canAttack, GameController.CanAttackUnit(Catapult, Target));
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace Strategy.Domain.Tests
         [TestCase(10, 11, true)]
         [TestCase(9, 9, true)]
         [TestCase(9, 10, true)]
-        public void CanAttackUnit_Horseman(int X, int Y, bool CanAttack)
+        public void CanAttackUnit_Horseman(int x, int y, bool canAttack)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
@@ -312,11 +312,11 @@ namespace Strategy.Domain.Tests
             Player Player1 = new Player(1, "Игрок №1", null);
             Player Player2 = new Player(2, "Игрок №2", null);
             Horseman Horseman = new Horseman(Player1, startPositionX, startPositionY);
-            Archer Target = new Archer(Player2, X, Y);
-            Map Map = CreateMap(Units: new object[] {Horseman, Target});
+            Archer Target = new Archer(Player2, x, y);
+            Map Map = CreateMap(units: new object[] {Horseman, Target});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanAttack, GameController.CanAttackUnit(Horseman, Target));
+            Assert.AreEqual(canAttack, GameController.CanAttackUnit(Horseman, Target));
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace Strategy.Domain.Tests
         [TestCase(10, 11, true)]
         [TestCase(9, 9, true)]
         [TestCase(9, 10, true)]
-        public void CanAttackUnit_Swordsman(int X, int Y, bool CanAttack)
+        public void CanAttackUnit_Swordsman(int x, int y, bool canAttack)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
@@ -339,11 +339,11 @@ namespace Strategy.Domain.Tests
             Player Player1 = new Player(1, "Игрок №1", null);
             Player Player2 = new Player(2, "Игрок №2", null);
             Swordsman Swordsman = new Swordsman(Player1, startPositionX, startPositionY);
-            Archer Target = new Archer(Player2, X, Y);
-            Map Map = CreateMap(Units: new object[] {Swordsman, Target});
+            Archer Target = new Archer(Player2, x, y);
+            Map Map = CreateMap(units: new object[] {Swordsman, Target});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanAttack, GameController.CanAttackUnit(Swordsman, Target));
+            Assert.AreEqual(canAttack, GameController.CanAttackUnit(Swordsman, Target));
         }
 
         /// <summary>
@@ -359,17 +359,17 @@ namespace Strategy.Domain.Tests
         [TestCase(11, 10, true)]
         [TestCase(7, 7, true)]
         [TestCase(13, 13, true)]
-        public void CanMoveUnit_ArcherOnEmptyMap(int X, int Y, bool CanMove)
+        public void CanMoveUnit_ArcherOnEmptyMap(int x, int y, bool canMove)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
 
             Player Player = new Player(1, "Игрок №1", null);
             Archer Archer = new Archer(Player, startPositionX, startPositionY);
-            Map Map = CreateMap(Units: new[] {Archer});
+            Map Map = CreateMap(units: new[] {Archer});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanMove, GameController.CanMoveUnit(Archer, X, Y));
+            Assert.AreEqual(canMove, GameController.CanMoveUnit(Archer, x, y));
         }
 
         /// <summary>
@@ -385,17 +385,17 @@ namespace Strategy.Domain.Tests
         [TestCase(11, 10, true)]
         [TestCase(9, 9, true)]
         [TestCase(11, 11, true)]
-        public void CanMoveUnit_CatapultOnEmptyMap(int X, int Y, bool CanMove)
+        public void CanMoveUnit_CatapultOnEmptyMap(int x, int y, bool canMove)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
 
             Player Player = new Player(1, "Игрок №1", null);
             Catapult Catapult = new Catapult(Player, startPositionX, startPositionY);
-            Map Map = CreateMap(Units: new[] {Catapult});
+            Map Map = CreateMap(units: new[] {Catapult});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanMove, GameController.CanMoveUnit(Catapult, X, Y));
+            Assert.AreEqual(canMove, GameController.CanMoveUnit(Catapult, x, y));
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace Strategy.Domain.Tests
             Player Player = new Player(1, "Игрок №1", null);
             Catapult Catapult = new Catapult(Player, 10, 10);
             Horseman Horseman = new Horseman(Player, horsemanPositionX, horsemanPositionY);
-            Map Map = CreateMap(Units: new object[] {Catapult, Horseman});
+            Map Map = CreateMap(units: new object[] {Catapult, Horseman});
             GameController GameController = new GameController(Map);
 
             Assert.False(GameController.CanMoveUnit(Horseman, horsemanPositionX, horsemanPositionY));
@@ -429,17 +429,17 @@ namespace Strategy.Domain.Tests
         [TestCase(30, 30, true)]
         [TestCase(11, 15, true)]
         [TestCase(25, 12, true)]
-        public void CanMoveUnit_HorsemanOnEmptyMap(int X, int Y, bool CanMove)
+        public void CanMoveUnit_HorsemanOnEmptyMap(int x, int y, bool canMove)
         {
             const int startPositionX = 20;
             const int startPositionY = 20;
 
             Player Player = new Player(1, "Игрок №1", null);
             Horseman Horseman = new Horseman(Player, startPositionX, startPositionY);
-            Map Map = CreateMap(Units: new[] {Horseman});
+            Map Map = CreateMap(units: new[] {Horseman});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanMove, GameController.CanMoveUnit(Horseman, X, Y));
+            Assert.AreEqual(canMove, GameController.CanMoveUnit(Horseman, x, y));
         }
 
         /// <summary>
@@ -455,17 +455,17 @@ namespace Strategy.Domain.Tests
         [TestCase(15, 15, true)]
         [TestCase(9, 10, true)]
         [TestCase(12, 7, true)]
-        public void CanMoveUnit_SwordsmanOnEmptyMap(int X, int Y, bool CanMove)
+        public void CanMoveUnit_SwordsmanOnEmptyMap(int x, int y, bool canMove)
         {
             const int startPositionX = 10;
             const int startPositionY = 10;
 
             Player Player = new Player(1, "Игрок №1", null);
             Swordsman Swordsman = new Swordsman(Player, startPositionX, startPositionY);
-            Map Map = CreateMap(Units: new[] {Swordsman});
+            Map Map = CreateMap(units: new[] {Swordsman});
             GameController GameController = new GameController(Map);
 
-            Assert.AreEqual(CanMove, GameController.CanMoveUnit(Swordsman, X, Y));
+            Assert.AreEqual(canMove, GameController.CanMoveUnit(Swordsman, x, y));
         }
 
         /// <summary>

@@ -18,8 +18,8 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новый объект мечника, управляемый заданным игроком.
         /// </summary>
-        /// <param name="Player">Игрок, управляющий мечником.</param>
-        public Swordsman(Player Player) : base(Player)
+        /// <param name="player">Игрок, управляющий мечником.</param>
+        public Swordsman(Player player) : base(player)
         {
             MaxMoveRange = 5;
             MaxAttackRange = 1;
@@ -30,21 +30,21 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует нового мечника, управляемого заданным игроком и расположенного на заданных координатах.
         /// </summary>
-        /// <param name="Player">Игрок, к которому привязан мечник.</param>
-        /// <param name="X">Координата X позиции мечника.</param>
-        /// <param name="Y">Координата Y позиции мечника.</param>
-        public Swordsman(Player Player, int X, int Y) : this(Player)
+        /// <param name="player">Игрок, к которому привязан мечник.</param>
+        /// <param name="x">Координата X позиции мечника.</param>
+        /// <param name="y">Координата Y позиции мечника.</param>
+        public Swordsman(Player player, int x, int y) : this(player)
         {
-            UnitCoordinates = new Coordinates(X, Y);
+            UnitCoordinates = new Coordinates(x, y);
         }
 
         public override ImageSource UnitImageSource => IsDead ? DeadUnitSource : Image;
 
 
-        public override void Attack(PlayableUnit Other)
+        public override void Attack(PlayableUnit other)
         {
-            if (!CanAtack(Other)) return;
-            Other.Hp = Math.Max(0, Other.Hp - Damage);
+            if (!CanAtack(other)) return;
+            other.Hp = Math.Max(0, other.Hp - Damage);
         }
     }
 }

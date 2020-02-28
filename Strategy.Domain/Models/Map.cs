@@ -10,12 +10,12 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новый объект карты по заданной поверхности и набору юнитов.
         /// </summary>
-        /// <param name="Ground">ПОверхность карты.</param>
-        /// <param name="Units">Юниты, расположенные на карте.</param>
-        public Map(IReadOnlyList<object> Ground, IReadOnlyList<object> Units)
+        /// <param name="ground">ПОверхность карты.</param>
+        /// <param name="units">Юниты, расположенные на карте.</param>
+        public Map(IReadOnlyList<object> ground, IReadOnlyList<object> units)
         {
-            this.Ground = Ground;
-            this.Units = Units;
+            this.Ground = ground;
+            this.Units = units;
         }
 
 

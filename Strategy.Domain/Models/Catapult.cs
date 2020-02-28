@@ -18,8 +18,8 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новый объект катапульты, управляемый заданным игроком.
         /// </summary>
-        /// <param name="Player">Игрок, управляющий катапультой.</param>
-        public Catapult(Player Player) : base(Player)
+        /// <param name="player">Игрок, управляющий катапультой.</param>
+        public Catapult(Player player) : base(player)
         {
             MaxMoveRange = 1;
             MaxAttackRange = 10;
@@ -30,22 +30,22 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новую катапульту, управляемую заданным игроком и расположенную на заданных координатах.
         /// </summary>
-        /// <param name="Player">Игрок, к которому привязана катапульта.</param>
-        /// <param name="X">Координата X позиции катапульты.</param>
-        /// <param name="Y">Координата Y позиции катапульты.</param>
-        public Catapult(Player Player, int X, int Y) : this(Player)
+        /// <param name="player">Игрок, к которому привязана катапульта.</param>
+        /// <param name="x">Координата X позиции катапульты.</param>
+        /// <param name="y">Координата Y позиции катапульты.</param>
+        public Catapult(Player player, int x, int y) : this(player)
         {
-            UnitCoordinates = new Coordinates(X, Y);
+            UnitCoordinates = new Coordinates(x, y);
         }
 
         public override ImageSource UnitImageSource => IsDead ? DeadUnitSource : Image;
 
-        public override void Attack(PlayableUnit Other)
+        public override void Attack(PlayableUnit other)
         {
-            if (!CanAtack(Other)) return;
-            int Dx = Math.Abs(UnitCoordinates.X - Other.UnitCoordinates.X);
-            int Dy = Math.Abs(UnitCoordinates.Y - Other.UnitCoordinates.Y);
-            Other.Hp = Math.Max(0, Other.Hp - (Dx <= 1 && Dy <= 1 ? Damage / 2 : Damage));
+            if (!CanAtack(other)) return;
+            int Dx = Math.Abs(UnitCoordinates.X - other.UnitCoordinates.X);
+            int Dy = Math.Abs(UnitCoordinates.Y - other.UnitCoordinates.Y);
+            other.Hp = Math.Max(0, other.Hp - (Dx <= 1 && Dy <= 1 ? Damage / 2 : Damage));
         }
     }
 }

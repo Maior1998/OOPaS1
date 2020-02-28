@@ -8,10 +8,10 @@ namespace Strategy.Domain.Models
     public sealed class Coordinates
     {
         /// <inheritdoc />
-        public Coordinates(int X, int Y)
+        public Coordinates(int x, int y)
         {
-            this.X = X;
-            this.Y = Y;
+            this.X = x;
+            this.Y = y;
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace Strategy.Domain.Models
         public int Y { get; set; }
 
         /// <inheritdoc />
-        public override bool Equals(object Obj)
+        public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, Obj)) return false;
-            if (ReferenceEquals(this, Obj)) return true;
-            return Obj is Coordinates Other && Equals(Other);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is Coordinates Other && Equals(Other);
         }
 
         /// <inheritdoc />
@@ -44,41 +44,41 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Проверить на равенство с другим объектом.
         /// </summary>
-        private bool Equals(Coordinates Other)
+        private bool Equals(Coordinates other)
         {
-            return X == Other.X && Y == Other.Y;
+            return X == other.X && Y == other.Y;
         }
 
-        public static bool operator ==(Coordinates First, Coordinates Second)
+        public static bool operator ==(Coordinates first, Coordinates second)
         {
-            return First?.Equals(Second) ?? Second is null;
+            return first?.Equals(second) ?? second is null;
         }
 
-        public static bool operator !=(Coordinates First, Coordinates Second)
+        public static bool operator !=(Coordinates first, Coordinates second)
         {
-            if (First is null) return !(Second is null);
-            return !First.Equals(Second);
+            if (first is null) return !(second is null);
+            return !first.Equals(second);
         }
 
         /// <summary>
         ///     Расчет расстояния между двумя заданными координатами.
         /// </summary>
-        /// <param name="First">Первая точка-координата.</param>
-        /// <param name="Second">Вторая точка-координата.</param>
+        /// <param name="first">Первая точка-координата.</param>
+        /// <param name="second">Вторая точка-координата.</param>
         /// <returns>Координата - дистанция между заданными.</returns>
-        public static Coordinates DistanceTo(Coordinates First, Coordinates Second)
+        public static Coordinates DistanceTo(Coordinates first, Coordinates second)
         {
-            return new Coordinates(Math.Abs(First.X - Second.X), Math.Abs(First.Y - Second.Y));
+            return new Coordinates(Math.Abs(first.X - second.X), Math.Abs(first.Y - second.Y));
         }
 
         /// <summary>
         ///     Расчет расстояния между текущей координатой и заданной.
         /// </summary>
-        /// <param name="Other">Координата, до которой необходимо рассчитать расстояние.</param>
+        /// <param name="other">Координата, до которой необходимо рассчитать расстояние.</param>
         /// <returns>Координата - дистанция между заданными.</returns>
-        public Coordinates DistanceTo(Coordinates Other)
+        public Coordinates DistanceTo(Coordinates other)
         {
-            return DistanceTo(this, Other);
+            return DistanceTo(this, other);
         }
     }
 }

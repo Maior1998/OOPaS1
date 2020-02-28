@@ -10,14 +10,14 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Инициализирует новый объект игрока с заданным номером, именем и фоткой (портретом).
         /// </summary>
-        /// <param name="Id">Номер создаваемого игрока.</param>
-        /// <param name="Name">Имя создаваемого игрока.</param>
-        /// <param name="Portrait">Портрет, соответсвующий игроку.</param>
-        public Player(int Id, string Name, ImageSource Portrait)
+        /// <param name="id">Номер создаваемого игрока.</param>
+        /// <param name="name">Имя создаваемого игрока.</param>
+        /// <param name="portrait">Портрет, соответсвующий игроку.</param>
+        public Player(int id, string name, ImageSource portrait)
         {
-            this.Id = Id;
-            this.Name = Name;
-            this.Portrait = Portrait;
+            this.Id = id;
+            this.Name = name;
+            this.Portrait = portrait;
         }
 
 

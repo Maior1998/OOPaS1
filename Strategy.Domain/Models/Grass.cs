@@ -26,11 +26,11 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Создает новый объект травы по указанным координатам.
         /// </summary>
-        /// <param name="X">Координата X травы.</param>
-        /// <param name="Y">Координата Y травы.</param>
-        public Grass(int X, int Y)
+        /// <param name="x">Координата X травы.</param>
+        /// <param name="y">Координата Y травы.</param>
+        public Grass(int x, int y)
         {
-            UnitCoordinates = new Coordinates(X, Y);
+            UnitCoordinates = new Coordinates(x, y);
         }
 
         public override ImageSource UnitImageSource => Image;

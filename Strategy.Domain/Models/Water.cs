@@ -4,7 +4,6 @@ using System.Windows.Media.Imaging;
 
 namespace Strategy.Domain.Models
 {
-    //TODO: так вода или поверхность? это такая отсылка к Battletoads?
     /// <summary>
     ///     Непроходимая наземная поверхность.
     /// </summary>
@@ -27,11 +26,11 @@ namespace Strategy.Domain.Models
         /// <summary>
         ///     Создает новый объект воды по указанным координатам.
         /// </summary>
-        /// <param name="X">Координата X воды.</param>
-        /// <param name="Y">Координата Y воды.</param>
-        public Water(int X, int Y)
+        /// <param name="x">Координата X воды.</param>
+        /// <param name="y">Координата Y воды.</param>
+        public Water(int x, int y)
         {
-            UnitCoordinates = new Coordinates(X, Y);
+            UnitCoordinates = new Coordinates(x, y);
         }
 
         public override ImageSource UnitImageSource => Image;
